@@ -1,0 +1,20 @@
+documentation_complete: true
+
+prodtype: fedora,multi_platform_sle,ol7,ol8,rhel6,rhel7,rhel8,rhv4,sle11,sle12
+
+title: 'Set account lock settings for failed password attempts using pam_tally2.so'
+
+description: |-
+    Set account lock settings for failed password attempts using pam_tally2.so.
+
+rationale: |-
+    Set account lock settings for failed password attempts using pam_tally2.so.
+
+severity: medium
+
+ocil_clause: 'Account lock is not configured'
+
+ocil: |-
+    Ensure the failed password attempt policy is configured correctly.
+
+platform: pam

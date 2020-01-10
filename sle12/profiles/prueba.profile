@@ -6,4 +6,4 @@ description: |-
     Write the profile description here
 
 selections:
-    - bios_enable_execution_restrictions
+    - accounts_passwords_pam_tally2_lock_account

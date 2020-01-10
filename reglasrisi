@@ -210,9 +210,11 @@ audit_rules_privileged_commands			-No se aplican correcciones
 sshd_use_approved_macs				-Funciona pero el check da error???
 rsyslog_nolisten				-No existe fix
 rsyslog_files_permissions			-Existe fix pero no funciona
-accounts_passwords_pam_faillock_interval	-En suse lo de pam va distinto a rhel
-accounts_passwords_pam_faillock_deny
-accounts_passwords_pam_faillock_unlock_time
+
+x-accounts_passwords_pam_faillock_interval	-En suse lo de pam va distinto a rhel(todas las reglas accounts_passwords_pam_faillock* han sido integradas en una sola regla para suse: accounts_passwords_pam_tally2_lock_account)
+x-accounts_passwords_pam_faillock_deny
+x-accounts_passwords_pam_faillock_unlock_time
+
 accounts_password_pam_unix_remember
 no_empty_passwords				-El fix no funciona?
 set_password_hashing_algorithm_systemauth	-El fix(bash) no funciona?
@@ -259,6 +261,7 @@ x-no_forward_files
 x-no_rhosts_files
 x-accounts_root_path_dirs_ownership
 x-package_libwrap0_installed
+x-accounts_passwords_pam_tally2_lock_account
 
 PENDIENTES DE APROBACION FINAL
 
@@ -270,6 +273,7 @@ accounts_root_path_dirs_ownership		-regla, check y fix
 package_libwrap0_installed			-Regla, check y fix
 sshd_set_max_auth_tries				-Check y fix
 bios_enable_execution_restrictions		-Check
+accounts_passwords_pam_tally2_lock_account	-Regla, check y fix
 
 EJEMPLOS INTERESANTES OVAL
 

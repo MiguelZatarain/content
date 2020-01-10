@@ -1,0 +1,50 @@
+<def-group>
+  <definition class="compliance" id="accounts_passwords_pam_tally2_lock_account" version="1">
+    <metadata>
+      <title>accounts_passwords_pam_tally2_lock_account</title>
+      <affected family="unix">
+        <platform>multi_platform_sle</platform>
+      </affected>
+      <description>
+        accounts_passwords_pam_tally2_lock_account
+      </description>
+    </metadata>
+
+<!--visual separator-->
+
+    <criteria operator="AND">
+      <criterion comment="Check if the line auth required pam_tally2.so onerr=fail audit silent deny=5 unlock_time=900 exists in common-auth" test_ref="test_accounts_passwords_pam_tally2_lock_account_common_auth_pattern" />
+      <criterion comment="Check if the line account required pam_tally2.so exists in common-account" test_ref="test_accounts_passwords_pam_tally2_lock_account_common_account_pattern" />
+    </criteria>
+  </definition>
+
+<!--visual separator-->
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="Check if the line auth required pam_tally2.so onerr=fail audit silent deny=5 unlock_time=900 exists in common-auth"
+  id="test_accounts_passwords_pam_tally2_lock_account_common_auth_pattern" version="1">
+    <ind:object object_ref="object_accounts_passwords_pam_tally2_lock_account_common_auth_pattern" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="Check if the line account required pam_tally2.so exists in common-account"
+  id="test_accounts_passwords_pam_tally2_lock_account_common_account_pattern" version="1">
+    <ind:object object_ref="object_accounts_passwords_pam_tally2_lock_account_common_account_pattern" />
+  </ind:textfilecontent54_test>
+
+<!--visual separator-->
+
+    <ind:textfilecontent54_object comment="Check if the line auth required pam_tally2.so onerr=fail audit silent deny=5 unlock_time=900 exists in common-auth" id="object_accounts_passwords_pam_tally2_lock_account_common_auth_pattern" version="1">
+      <ind:filepath>/etc/pam.d/common-auth</ind:filepath>
+      <ind:pattern operation="pattern match">^auth.*required.*pam_tally2.so.*((?=.*onerr=fail).(?=.*audit).(?=.*silent).(?=.*deny=5).(?=.*unlock_time=900)).*$</ind:pattern>
+      <ind:instance datatype="int" operation="equals">1</ind:instance>
+    </ind:textfilecontent54_object>
+
+
+    <ind:textfilecontent54_object comment="Check if the line account required pam_tally2.so exists in common-account" id="object_accounts_passwords_pam_tally2_lock_account_common_account_pattern" version="1">
+      <ind:filepath>/etc/pam.d/common-account</ind:filepath>
+      <ind:pattern operation="pattern match">^account.*required.*pam_tally2.so$</ind:pattern>
+      <ind:instance datatype="int" operation="equals">1</ind:instance>
+    </ind:textfilecontent54_object>
+
+</def-group>
