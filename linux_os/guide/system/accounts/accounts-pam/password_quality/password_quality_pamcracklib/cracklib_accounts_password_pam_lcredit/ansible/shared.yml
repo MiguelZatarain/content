@@ -1,0 +1,27 @@
+# platform = multi_platform_sle
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+- name: Insert a the new rule before an existing rule in common-password
+  pamd:
+    name: common-password
+    type: password
+    control: required
+    module_path: pam_unix.so
+    new_type: password
+    new_control: requisite
+    new_module_path: pam_cracklib.so
+    state: before
+
+- name: Update specific argument value in a rule
+  pamd:
+    name: common-password
+    type: password
+    control: requisite
+    module_path: pam_cracklib.so
+    module_arguments: 'lcredit=-1'
+    state: args_present
+
+

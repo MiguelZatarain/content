@@ -1,0 +1,36 @@
+<def-group>
+  <definition class="compliance" id="cracklib_accounts_password_pam_ocredit" version="1">
+    <metadata>
+      <title>cracklib_accounts_password_pam_ocredit</title>
+      <affected family="unix">
+        <platform>multi_platform_sle</platform>
+      </affected>
+      <description>
+        Check if the field ocredit=-1 exist in common-password
+      </description>
+    </metadata>
+
+<!--visual separator-->
+
+    <criteria>
+      <criterion comment="Check if the field ocredit=-1 exist in common-password" test_ref="test_cracklib_accounts_password_pam_ocredit" />
+    </criteria>
+  </definition>
+
+<!--visual separator-->
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="Check if the field ocredit=-1 exist in common-password"
+  id="test_cracklib_accounts_password_pam_ocredit" version="1">
+    <ind:object object_ref="object_cracklib_accounts_password_pam_ocredit" />
+  </ind:textfilecontent54_test>
+
+<!--visual separator-->
+
+    <ind:textfilecontent54_object comment="Check if the field ocredit=-1 exist in common-password" id="object_cracklib_accounts_password_pam_ocredit" version="1">
+      <ind:filepath>/etc/pam.d/common-password</ind:filepath>
+      <ind:pattern operation="pattern match">^password.*requisite.*pam_cracklib.so.*ocredit=-1.*$</ind:pattern>
+      <ind:instance datatype="int" operation="equals">1</ind:instance>
+    </ind:textfilecontent54_object>
+
+</def-group>
