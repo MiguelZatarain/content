@@ -30,7 +30,7 @@
   lineinfile:
     dest: /etc/cron.daily/logrotate
     regexp: "{{ item.regexp }}"
-    line: #!/bin/sh
+    line: "#!/bin/sh"
   with_items:
     - { regexp: '^\#!\/bin\/bash' }
     - { regexp: '^\#!\/bin\/sh' }
