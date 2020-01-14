@@ -1,0 +1,17 @@
+# platform = multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_rhv,multi_platform_sle
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = medium
+- name: "Prevent Log In to Accounts With Empty Password - common-auth"
+  replace:
+    dest: /etc/pam.d/common-auth
+    follow: yes
+    regexp: 'nullok'
+
+- name: "Prevent Log In to Accounts With Empty Password - common-auth"
+  replace:
+    dest: /etc/pam.d/common-auth
+    follow: yes
+    regexp: 'nullok'
+
