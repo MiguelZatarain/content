@@ -6,7 +6,7 @@
 - name: Ensure Log Level INFO
   lineinfile:
     path: /etc/ssh/sshd_config
-    regexp: '\#?LogLevel\sINFO'
+    regexp: '\#?LogLevel\s.+'
     line: LogLevel INFO
     state: present
   register: sshd
