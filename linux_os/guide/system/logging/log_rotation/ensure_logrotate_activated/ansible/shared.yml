@@ -6,10 +6,10 @@
 - name: Ensure daily rotate
   lineinfile:
     path: /etc/logrotate.conf
-    regexp: '^daily '
+    regexp: '^daily'
     insertafter: 'EOF'
     line: daily
-    backrefs: yes
+    state: present
 
 - name: Remove weekly, monthly or yearly rotates
   lineinfile:
@@ -24,18 +24,16 @@
 - name: Set interpreter on daily cron
   lineinfile:
     dest: /etc/cron.daily/logrotate
-    regexp: "{{ item.regexp }}"
+    regexp: '^\#!\/bin\/.*sh'
     line: "#!/bin/sh"
-    backrefs: yes
+    state: present
+    insertafter: 'BOF'
     create: yes
-  with_items:
-    - { regexp: '^\#!\/bin\/bash' }
-    - { regexp: '^\#!\/bin\/sh' }
 
 - name: Configure daily cron
   lineinfile:
     path: /etc/cron.daily/logrotate
-    regexp: '^\s*\/usr\/sbin\/logrotate\s.+\/etc\/logrotate\.conf'
+    regexp: '^\s*\/usr\/sbin\/logrotate\s.*\/etc\/logrotate\.conf'
     insertafter: 'EOF'
-    backrefs: yes
+    state: present
     line: /usr/sbin/logrotate /etc/logrotate.conf
