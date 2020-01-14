@@ -9,6 +9,7 @@
     regexp: '^daily '
     insertafter: 'EOF'
     line: daily
+    backrefs: yes
 
 - name: Remove weekly, monthly or yearly rotates
   lineinfile:
@@ -31,6 +32,7 @@
     dest: /etc/cron.daily/logrotate
     regexp: "{{ item.regexp }}"
     line: "#!/bin/sh"
+    backrefs: yes
   with_items:
     - { regexp: '^\#!\/bin\/bash' }
     - { regexp: '^\#!\/bin\/sh' }
@@ -40,4 +42,5 @@
     path: /etc/cron.daily/logrotate
     regexp: '^\s*\/usr\/sbin\/logrotate\s.+\/etc\/logrotate\.conf'
     insertafter: 'EOF'
+    backrefs: yes
     line: /usr/sbin/logrotate /etc/logrotate.conf
