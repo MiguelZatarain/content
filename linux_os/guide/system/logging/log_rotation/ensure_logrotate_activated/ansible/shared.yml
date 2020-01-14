@@ -21,18 +21,13 @@
     - { regexp: '^monthly' }
     - { regexp: '^yearly' }
 
-- name: Touch daily cron
-  file:
-    state: touch
-    path: /etc/cron.daily/logrotate
-
-
 - name: Set interpreter on daily cron
   lineinfile:
     dest: /etc/cron.daily/logrotate
     regexp: "{{ item.regexp }}"
     line: "#!/bin/sh"
     backrefs: yes
+    create: yes
   with_items:
     - { regexp: '^\#!\/bin\/bash' }
     - { regexp: '^\#!\/bin\/sh' }
