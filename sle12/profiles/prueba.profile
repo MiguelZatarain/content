@@ -6,4 +6,4 @@ description: |-
     Write the profile description here
 
 selections:
-    - bios_enable_execution_restrictions
+    - set_password_hashing_algorithm_systemauth_suse
