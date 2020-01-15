@@ -14,5 +14,5 @@
 - name: Restart service SSHD
   service:
     name: sshd
-    state: restarted
+    state: reloaded
   when: sshd.changed
