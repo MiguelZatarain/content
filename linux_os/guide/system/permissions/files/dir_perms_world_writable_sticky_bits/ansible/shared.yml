@@ -1,1 +1,19 @@
-- name: Find world writable dirs
+- name: Get local paths
+  shell: df --local -P | awk '{if (NR!=1) print $6}'
+  register: paths
+
+- name: Find directories
+  find:
+    paths: "{{ item }}"
+    file_type: directory
+    recurse: no
+  register: change_perm
+  with_items: "{{ paths.stdout_lines | unique | list }}"
+
+- name: Change perms
+  file:
+    path:  "{{ item.path }}"
+    mode:  g+s
+  with_items:
+    -  "{{ change_perm.results[0].files }}"
+  when: item.mode == '0777'
