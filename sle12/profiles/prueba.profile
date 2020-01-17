@@ -6,4 +6,4 @@ description: |-
     Write the profile description here
 
 selections:
-    - bios_enable_execution_restrictions
+    - sshd_use_approved_macs
