@@ -1,0 +1,30 @@
+# platform = multi_platform_sle
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+- name: Get UID less than 1000 whose name!=root
+  shell: cat /etc/passwd | awk -F{{ ":" }} '$3 < 1000 {print $1}' | grep -v 'root'
+  register: users
+
+- name: Block all system user accounts
+  shell: usermod -L {{ item }}
+  with_items: "{{ users.stdout_lines }}"
+
+- name: Get UID less than 1000 whose name!=root|sync|shutdown|halt
+  shell: cat /etc/passwd | awk -F{{ ":" }} '$3 < 1000 {print $1}' | grep -v "root" | grep -v "sync" | grep -v "shutdown" | grep -v "halt"
+  register: users2
+
+- name: change shell to /sbin/nologin
+  shell: usermod -s /sbin/nologin {{ item }}
+  with_items: "{{ users2.stdout_lines }}"
+
+
+
+
+
+
+
+
+
