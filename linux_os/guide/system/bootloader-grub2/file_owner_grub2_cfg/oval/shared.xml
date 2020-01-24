@@ -4,6 +4,7 @@
       <title>Verify /boot/grub2/grub.cfg Owner</title>
       <affected family="unix">
         <platform>multi_platform_all</platform>
+        <platform>multi_platform_sle</platform>
       </affected>
       <description>Verify that /boot/grub2/grub.cfg is owned by uid 0.</description>
     </metadata>
