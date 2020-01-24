@@ -1,0 +1,23 @@
+documentation_complete: true
+
+prodtype: sle12
+
+title: 'Disable rsyncd service'
+
+description: |-
+    Disable rsyncd service.
+
+rationale: |-
+    Disable rsyncd service.
+
+severity: medium
+
+ocil: 'Ensure service rsyncd is disabled'
+
+platform: machine
+
+template:
+    name: service_disabled
+    vars:
+        servicename: rsyncd
+        packagename: rsync
