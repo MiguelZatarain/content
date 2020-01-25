@@ -1,0 +1,24 @@
+documentation_complete: true
+
+prodtype: sle11,sle12
+
+title: 'Verify Permissions on issue File'
+
+description: |-
+    Verify Permissions on issue File
+
+rationale: |-
+    Verify Permissions on issue File
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/issue", perms="-rw-r--r--") }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/etc/issue", perms="-rw-r--r--") }}}
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /etc/issue
+        filemode: '0644'
