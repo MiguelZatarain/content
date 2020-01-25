@@ -1,0 +1,20 @@
+documentation_complete: true
+
+title: 'Verify User Who Owns hosts.allow File'
+
+description: 'Verify ownership of hosts.allow'
+
+rationale: |-
+    El archivo /etc/hosts.allow contiene información de red que utilizan muchas aplicaciones y, por lo tanto, debe ser legible para que estas aplicaciones funcionen.
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/hosts.allow", owner="root") }}}'
+
+ocil: '{{{ ocil_file_owner(file="/etc/hosts.allow", owner="root") }}}'
+
+template:
+    name: file_owner
+    vars:
+        filepath: /etc/hosts.allow
+        fileuid: '0'
