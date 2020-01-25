@@ -1,0 +1,24 @@
+documentation_complete: true
+
+prodtype: sle11,sle12
+
+title: 'Verify Permissions on issue.net File'
+
+description: |-
+    Verify Permissions on issue.net File
+
+rationale: |-
+    Verify Permissions on issue.net File
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/issue.net", perms="-rw-r--r--") }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/etc/issue.net", perms="-rw-r--r--") }}}
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /etc/issue.net
+        filemode: '0644'
