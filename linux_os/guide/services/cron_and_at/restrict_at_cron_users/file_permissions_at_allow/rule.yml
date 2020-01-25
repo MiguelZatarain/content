@@ -1,0 +1,24 @@
+documentation_complete: true
+
+prodtype: sle11,sle12
+
+title: 'Verify Permissions on at.allow File'
+
+description: |-
+    Verify Permissions on at.allow File
+
+rationale: |-
+    Verify Permissions on at.allow File
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/at.allow", perms="-rw-------") }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/etc/at.allow", perms="-rw-------") }}}
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /etc/at.allow
+        filemode: '0600'
