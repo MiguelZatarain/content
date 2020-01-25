@@ -1,0 +1,26 @@
+documentation_complete: true
+
+prodtype: multi_platform_sle,rhel7,rhel8,rhv4,sle11,sle12,wrlinux1019
+
+title: 'Verify User Who Owns /etc/motd file'
+
+description: |-
+    If <tt>/etc/motd</tt> exists, it must be owned by <tt>root</tt>.
+    {{{ describe_file_owner(file="/etc/motd", owner="root") }}}
+
+rationale: |-
+    If the owner of the motd file is not set to root, the possibility exists for an
+    unauthorized user to view or edit sensitive information.
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/motd", owner="root") }}}'
+
+ocil: '{{{ ocil_file_owner(file="/etc/motd", owner="root") }}}'
+
+template:
+    name: file_owner
+    vars:
+        filepath: /etc/motd
+        missing_file_pass: 'true'
+        fileuid: '0'
