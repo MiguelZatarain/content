@@ -1,0 +1,25 @@
+documentation_complete: true
+
+prodtype: sle11,sle12
+
+title: 'Verify Permissions on hosts.deny File'
+
+description: |-
+    Verify Permissions on /etc/hosts.deny File
+
+rationale: |-
+    El archivo /etc/hosts.deny contiene información de red que utilizan muchas aplicaciones del
+sistema y, por lo tanto, debe ser legible para que estas aplicaciones funcionen.
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/hosts.deny", perms="-rw-r--r--") }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/etc/hosts.deny", perms="-rw-r--r--") }}}
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /etc/hosts.deny
+        filemode: '0644'
