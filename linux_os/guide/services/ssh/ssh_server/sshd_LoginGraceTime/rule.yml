@@ -1,0 +1,19 @@
+documentation_complete: true
+
+title: 'Ensure LoginGraceTime is set to one minute'
+
+description: |-
+    Ensure LoginGraceTime is set to one minute.
+
+rationale: |-
+    Ensure LoginGraceTime is set to one minute.
+
+severity: high
+
+template:
+    name: sshd_lineinfile
+    vars:
+        missing_parameter_pass: 'false'
+        parameter: LoginGraceTime
+        rule_id: sshd_LoginGraceTime
+        value: '60'
