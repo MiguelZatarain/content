@@ -1,0 +1,13 @@
+documentation_complete: true
+
+prodtype: multi_platform_sle,rhel7,rhel8,rhv4,sle11,sle12,wrlinux1019
+
+title: 'Delete at.deny and cron.deny files'
+
+description: |-
+    Delete at.deny and cron.deny files.
+
+rationale: |-
+    Delete at.deny and cron.deny files.
+
+severity: medium
