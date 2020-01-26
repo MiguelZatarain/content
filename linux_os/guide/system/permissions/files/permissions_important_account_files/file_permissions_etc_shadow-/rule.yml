@@ -1,0 +1,27 @@
+documentation_complete: true
+
+prodtype: multi_platform_sle,sle11,sle12
+
+title: 'Verify Permissions on shadow- File'
+
+description: |-
+    {{{ describe_file_permissions(file="/etc/shadow-", perms="0644") }}}
+
+rationale: |-
+    If the <tt>/etc/shadow-</tt> file is writable by a group-owner or the
+    world the risk of its compromise is increased. The file contains the list of
+    accounts on the system and associated information, and protection of this file
+    is critical for system security.
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/shadow-", perms="-rw-r--r--") }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/etc/shadow-", perms="-rw-r--r--") }}}
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /etc/shadow-
+        filemode: '0644'

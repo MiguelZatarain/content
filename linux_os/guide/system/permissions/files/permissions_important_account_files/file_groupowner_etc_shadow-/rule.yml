@@ -1,0 +1,21 @@
+documentation_complete: true
+
+title: 'Verify Group Who Owns shadow- File'
+
+description: '{{{ describe_file_group_owner(file="/etc/shadow-", group="root") }}}'
+
+rationale: |-
+    The <tt>/etc/shadow-</tt> file contains information about the users that are configured on
+    the system. Protection of this file is critical for system security.
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/shadow-", group="root") }}}'
+
+ocil: '{{{ ocil_file_group_owner(file="/etc/shadow-", group="root") }}}'
+
+template:
+    name: file_groupowner
+    vars:
+        filepath: /etc/shadow-
+        filegid: '0'
