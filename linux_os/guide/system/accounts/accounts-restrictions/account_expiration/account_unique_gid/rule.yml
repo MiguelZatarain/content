@@ -2,9 +2,9 @@ documentation_complete: true
 
 prodtype: multi_platform_sle,sle11,sle12
 
-title: 'Ensure All Accounts on the System Have Unique GIDs'
+title: 'Ensure All groups on the System Have Unique GIDs'
 
-description: 'Change GIDs, or delete accounts, so each has a unique name.'
+description: 'Change GIDs, or delete groups, so each has a unique name.'
 
 rationale: 'Unique GIDs allow for accountability on the system.'
 

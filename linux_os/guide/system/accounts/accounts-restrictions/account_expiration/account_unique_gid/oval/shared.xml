@@ -1,12 +1,12 @@
 <def-group>
   <definition class="compliance" id="account_unique_gid" version="1">
     <metadata>
-      <title>Set All Accounts To Have Unique GIDs</title>
+      <title>Set All Groups To Have Unique GIDs</title>
       <affected family="unix">
         <platform>multi_platform_all</platform>
         <platform>multi_platform_sle</platform>
       </affected>
-      <description>All accounts on the system should have unique GIDs for proper accountability.</description>
+      <description>All groups on the system should have unique GIDs for proper accountability.</description>
     </metadata>
 
       <criteria comment="There should not exist duplicate gids entries in /etc/group">
