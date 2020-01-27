@@ -1,0 +1,35 @@
+<def-group>
+  <definition class="compliance" id="write_permissions_user_hidden_files" version="1">
+    <metadata>
+      <title>Ensure user hidden files are not world-witable or group-writable</title>
+      <affected family="unix">
+        <platform>multi_platform_ol</platform>
+        <platform>multi_platform_opensuse</platform>
+        <platform>multi_platform_rhel</platform>
+        <platform>multi_platform_sle</platform>
+        <platform>multi_platform_wrlinux</platform>
+      </affected>
+      <description>Ensure user hidden files are not world-witable or group-writable.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_write_permissions_user_hidden_files" />
+    </criteria>
+  </definition>
+
+    <unix:file_test check="all" check_existence="none_exist" comment="Ensure user hidden files are not world-witable or group-writable" id="test_write_permissions_user_hidden_files" version="1">
+    <unix:object object_ref="object_write_permissions_user_hidden_files" />
+  </unix:file_test>
+
+  <unix:file_object comment="Ensure user hidden files are not world-witable or group-writable" id="object_write_permissions_user_hidden_files" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="all" />
+    <unix:path operation="equals">/home</unix:path>
+    <unix:filename operation="pattern match">^[.].*</unix:filename>
+    <filter action="include">state_write_permissions_user_hidden_files</filter>
+  </unix:file_object>
+
+  <unix:file_state id="state_write_permissions_user_hidden_files" version="1" operator="OR">
+    <unix:gwrite datatype="boolean">true</unix:gwrite>
+    <unix:owrite datatype="boolean">true</unix:owrite>
+  </unix:file_state>
+
+</def-group>
