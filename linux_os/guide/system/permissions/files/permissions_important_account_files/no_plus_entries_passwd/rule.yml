@@ -1,0 +1,24 @@
+documentation_complete: true
+
+prodtype: multi_platform_sle,sle11,sle12
+
+title: 'No plus entries in /etc/passwd'
+
+description: 'El carácter + en varios archivos solía ser marcadores para que los sistemas insertaran datos de
+mapas NIS en cierto punto en un archivo de configuración del sistema. Estas entradas ya no son
+necesarias en la mayoría de los sistemas, pero pueden existir en archivos que se han importado
+de otras plataformas.'
+
+rationale: 'El carácter + en varios archivos solía ser marcadores para que los sistemas insertaran datos de
+mapas NIS en cierto punto en un archivo de configuración del sistema. Estas entradas ya no son
+necesarias en la mayoría de los sistemas, pero pueden existir en archivos que se han importado
+de otras plataformas.'
+
+severity: medium
+
+ocil_clause: 'a line is returned'
+
+ocil: |-
+    Run the following command:
+    <pre>$ grep '^\+:' /etc/passwd</pre>
+    If there are no + entries, no line will be returned.
