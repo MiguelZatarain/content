@@ -1,19 +1,17 @@
-- name: Get local paths
-  shell: df --local -P | awk '{if (NR!=1) print $6}'
-  register: paths
+# platform = multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_rhv,multi_platform_sle
+# reboot = false
+# strategy = restrict
+# complexity = high
+# disruption = high
 
-- name: Find directories
-  find:
-    paths: "{{ item }}"
-    file_type: directory
-    recurse: no
-  register: change_perm
-  with_items: "{{ paths.stdout_lines | unique | list }}"
+- name: Get local paths
+  shell: find / -type d \( -perm -o+w \)
+  register: paths
+  ignore_errors: True
 
 - name: Change perms
   file:
-    path:  "{{ item.path }}"
-    mode:  g+s
+    path:  "{{ item }}"
+    mode:  a+t
   with_items:
-    -  "{{ change_perm.results[0].files }}"
-  when: item.mode == '0777'
+    -  "{{ paths.stdout_lines }}"
