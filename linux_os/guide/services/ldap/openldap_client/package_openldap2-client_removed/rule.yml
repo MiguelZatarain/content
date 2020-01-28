@@ -1,0 +1,20 @@
+documentation_complete: true
+
+prodtype: multi_platform_sle,sle11,sle12
+
+title: 'Ensure package openldap2-client is uninstaled'
+
+description: 'Unless required, package openldap2-client should be uninstalled'
+
+rationale: 'El Protocolo ligero de acceso a directorios (LDAP) se introdujo como reemplazo de NIS / YP.
+Es un servicio que proporciona un método para buscar información de una base de datos
+central.'
+
+severity: high
+
+ocil_clause: 'a line is returned'
+
+ocil: |-
+    Run the following command:
+    <pre>$ sudo rpm -qa | grep openldap2-client</pre>
+    No line will be returned.
