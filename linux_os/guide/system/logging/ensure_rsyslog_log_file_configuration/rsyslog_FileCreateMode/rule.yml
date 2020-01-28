@@ -1,0 +1,19 @@
+documentation_complete: true
+
+prodtype: sle11,sle12
+
+title: 'Ensure FileCreateMode is set to 0640'
+
+description: 'Ensure that the files created by rsyslog have 0640 as default permission mode.'
+
+rationale: 'rsyslog creará archivos de registro que aún no existen en el sistema. Esta configuración
+controla qué permisos se aplicarán a estos archivos recién creados.'
+
+severity: high
+
+ocil_clause: 'Ensure correct permissions'
+
+ocil: |-
+    Run the following command to check for correct configuration:
+    <pre>$ sudo grep "FileCreateMode" /etc/rsyslog.conf</pre>
+    Permissions should be 0640.
