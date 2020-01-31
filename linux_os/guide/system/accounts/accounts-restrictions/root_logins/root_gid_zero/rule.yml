@@ -1,0 +1,18 @@
+documentation_complete: true
+
+prodtype: fedora,ol7,ol8,rhel6,rhel7,rhel8,rhv4,sle11,sle12
+
+title: 'Ensure root GID is 0'
+
+description: |-
+    Ensure root GID is 0.
+
+rationale: |-
+    Ensure root GID is 0.
+
+severity: high
+
+ocil_clause: 'Root GID is not 0'
+
+ocil: |-
+    Ensure the root GID wirh the following command':' grep "^root:" /etc/passwd | cut -f4 -d, the output should be 0
