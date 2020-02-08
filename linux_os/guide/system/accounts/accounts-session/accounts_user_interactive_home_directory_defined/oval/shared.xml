@@ -14,45 +14,79 @@
     </metadata>
 
     <criteria>
-      <criterion comment="Check permissions of all system log files" test_ref="test_patatan" />
+      <criterion test_ref="test_accounts_user_interactive_home_directory_defined" />
     </criteria>
-
   </definition>
 
-  <!-- OVAL object to collect content of /etc/passwd file -->
-  <ind:textfilecontent54_object id="object_accounts_user_interactive_home_directory_defined_etc_passwd_content" version="1">
+  <!-- OVAL object to collect content of /etc/group file ^.*:[0-9]+:[0-9]+:.*:(.*):.* -->
+  <ind:textfilecontent54_object id="object_get_passwd_paths" version="1">
     <ind:filepath>/etc/passwd</ind:filepath>
-    <!-- Home paths from /etc/passwd (6-th column) captured as subexpression of this object -->
-    <ind:pattern operation="pattern match">^.*:[1-9]\d{3,}:[0-9]+:[A-Za-z\s]+:([^:]+):.*$</ind:pattern>
-    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+    <!-- Group ID (GID) from /etc/group (3-rd column) captured as subexpression of this object -->
+    <ind:pattern operation="pattern match">.*:x:[0-9]{4,}:[0-9]+:.*:(.*):.*</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <!-- Turn that glob value into Perl's regex so it can be used as filepath pattern below -->
-  <local_variable id="var_accounts_user_interactive_home_directory_defined_rfp_include_config_regex" datatype="string" version="1" comment="$IncludeConfig value converted to regex">
-    <glob_to_regex>
-      <object_component item_field="subexpression" object_ref="object_accounts_user_interactive_home_directory_defined_etc_passwd_content" />
-    </glob_to_regex>
+  <!-- OVAL variable to hold all the different GIDs from /etc/group -->
+  <local_variable id="var_string_passwd_paths" comment="GIDs from /etc/group" datatype="string" version="1">
+    <object_component item_field="subexpression" object_ref="object_get_passwd_paths" />
   </local_variable>
 
-  <unix:file_object id="object_accounts_user_interactive_home_directory_defined_rfp_log_files_paths" comment="All rsyslog configuration files" version="1">
-    <unix:path operation="pattern match" var_ref="var_accounts_user_interactive_home_directory_defined_rfp_include_config_regex" var_check="at least one" />
-    <unix:filename xsi:nil="true" />
+  <unix:file_object comment="world writable" id="object_get_directories_defined_in_passwd" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <unix:path operation="equals">/</unix:path>
+    <unix:filename xsi:nil="true"/>
+    <filter action="include">state_defined_passwd</filter>
+    <!-- don't search /proc, /sys, and some special files from /selinux -->
+    <filter action="exclude">state_file_permissions_unauthorized_world_write_exclude_special_selinux_files</filter>
+    <filter action="exclude">state_file_permissions_unauthorized_world_write_exclude_proc</filter>
+    <filter action="exclude">state_file_permissions_unauthorized_world_write_exclude_sys</filter>
   </unix:file_object>
 
-  <unix:file_test check="all" check_existence="at_least_one_exists" comment="/var/log/audit files mode 0600" id="test_accounts_user_interactive_home_directory_defined" version="1">
-    <unix:object object_ref="object_accounts_user_interactive_home_directory_defined_rfp_log_files_paths" />
-  </unix:file_test>
+  <!-- OVAL variable to hold the count of unique usernames defined in /etc/passwd -->
+  <local_variable id="variable_count_of_paths" datatype="int" version="1"
+  comment="Count of unique username rows retrieved from /etc/passwd">
+    <count>
+      <unique>
+        <object_component item_field="path" object_ref="object_get_directories_defined_in_passwd" />
+      </unique>
+    </count>
+  </local_variable>
 
-  <!-- OVAL object to collect content of /etc/passwd file -->
-  <ind:textfilecontent54_object id="object_patatin" version="1">
-    <ind:filepath>/home/poseso</ind:filepath>
-    <!-- Home paths from /etc/passwd (6-th column) captured as subexpression of this object -->
-    <ind:pattern operation="pattern match" var_ref="var_accounts_user_interactive_home_directory_defined_rfp_include_config_regex" var_check="at least one" />
-    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
-  </ind:textfilecontent54_object>
+  <!-- Turn the OVAL variable representing count of user names into OVAL object
+       (for use in <variable_test> below)-->
+  <ind:variable_object id="object_count_of_paths" version="1">
+    <ind:var_ref>variable_count_of_paths</ind:var_ref>
+  </ind:variable_object>
 
-  <ind:textfilecontent54_test check="all" comment="disk error action" id="test_patatan" version="1">
-    <ind:object object_ref="object_patatin" />
-  </ind:textfilecontent54_test>
+  <!-- OVAL variable to hold the count of unique usernames defined in /etc/passwd -->
+  <local_variable id="variable_count_of_passwd_paths" datatype="int" version="1"
+  comment="Count of unique username rows retrieved from /etc/passwd">
+    <count>
+      <unique>
+        <object_component item_field="subexpression" object_ref="object_get_passwd_paths" />
+      </unique>
+    </count>
+  </local_variable>
+
+  <!-- Create OVAL state from count of unique usernames OVAL variable (to be used in
+       <variable_test> below -->
+  <ind:variable_state id="state_count_of_passwd_paths" version="1">
+    <ind:value var_ref="variable_count_of_passwd_paths" datatype="int"
+    operation="equals" var_check="at least one" />
+  </ind:variable_state>
+
+  <unix:file_state id="state_defined_passwd" version="1">
+    <unix:path operation="equals" var_ref="var_string_passwd_paths" var_check="at least one" />
+  </unix:file_state>
+
+  <!-- Check if count of all the different usernames defined in /etc/passwd matches the count
+       of all unique usernames defined in /etc/passwd (IOW if there aren't duplicate entries) -->
+  <ind:variable_test id="test_accounts_user_interactive_home_directory_defined" check="all" check_existence="all_exist"
+  comment="There should not exist duplicate user name entries in /etc/passwd" version="1">
+    <ind:object object_ref="object_count_of_paths" />
+    <ind:state state_ref="state_count_of_passwd_paths" />
+  </ind:variable_test>
+
+
 
 </def-group>
