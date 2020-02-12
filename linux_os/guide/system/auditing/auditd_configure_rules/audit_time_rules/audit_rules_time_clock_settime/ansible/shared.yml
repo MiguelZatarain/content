@@ -1,0 +1,44 @@
+# platform = multi_platform_fedora,multi_platform_rhel,multi_platform_rhv,multi_platform_sle
+# reboot = true
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+- name: Set variable ruta
+  set_fact:
+    ruta: "/etc/audit/audit.rules"
+
+- name: Check if /etc/audit/rules.d exists
+  stat:
+    path: /etc/audit/rules.d
+  register: stat_result
+
+- name: Set variable if /etc/audit/rules.d exists
+  set_fact:
+    ruta: "/etc/audit/rules.d/openscap.rules"
+  when: stat_result.stat.exists == True
+
+- name: Adding remediation to audit.rules - 32 bits
+  blockinfile:
+    path: {{ ruta }}
+    create: yes
+    block: |
+      -a always,exit -F arch=b32 -S adjtimex -S settimeofday -S stime -k timechange
+      -a always,exit -F arch=b32 -S clock_settime -k time-change
+      -w /etc/localtime -p wa -k time-change
+  when: ansible_architecture == "x86_32"
+
+- name: Adding remediation to audit.rules - 64 bits
+  blockinfile:
+    path: {{ ruta }}
+    create: yes
+    block: |
+      -a always,exit -F arch=b64 -S adjtimex -S settimeofday -k time-change
+      -a always,exit -F arch=b32 -S adjtimex -S settimeofday -S stime -k timechange
+      -a always,exit -F arch=b64 -S clock_settime -k time-change
+      -a always,exit -F arch=b32 -S clock_settime -k time-change
+      -w /etc/localtime -p wa -k time-change
+  when: ansible_architecture == "x86_64"
+
+- name: Reload rules
+  command: augenrules
