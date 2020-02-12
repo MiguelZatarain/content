@@ -15,7 +15,7 @@
 
 - name: Set variable if /etc/audit/rules.d exists
   set_fact:
-    ruta: "/etc/audit/rules.d/openscap.rules"
+    ruta: "/etc/audit/rules.d/settimeofday.rules"
   when: stat_result.stat.exists == True
 
 - name: Adding remediation to audit.rules - 32 bits
@@ -24,6 +24,7 @@
     create: yes
     block: |
       -a always,exit -F arch=b32 -S settimeofday -k timechange
+    marker: "<!-- {mark} ANSIBLE MANAGED BLOCK for settimeofday -->"
   when: ansible_architecture == "x86_32"
 
 - name: Adding remediation to audit.rules - 64 bits
@@ -33,6 +34,7 @@
     block: |
       -a always,exit -F arch=b64 -S settimeofday -k time-change
       -a always,exit -F arch=b32 -S settimeofday -k timechange
+    marker: "<!-- {mark} ANSIBLE MANAGED BLOCK for settimeofday -->"
   when: ansible_architecture == "x86_64"
 
 - name: Reload rules
