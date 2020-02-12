@@ -1,0 +1,32 @@
+# platform = multi_platform_fedora,multi_platform_rhel,multi_platform_rhv,multi_platform_sle
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+- name: Set variable ruta
+  set_fact:
+    ruta: "/etc/audit/audit.rules"
+
+- name: Check if /etc/audit/rules.d exists
+  stat:
+    path: /etc/audit/rules.d
+  register: stat_result
+
+- name: Set variable if /etc/audit/rules.d exists
+  set_fact:
+    ruta: "/etc/audit/rules.d/usergroup_modification.rules"
+  when: stat_result.stat.exists == True
+
+- name: Adding remediation to audit.rules
+  blockinfile:
+    path: "{{ ruta }}"
+    create: yes
+    block: |
+      -w /etc/group -p wa -k identity
+      -w /etc/passwd -p wa -k identity -w /etc/gshadow -p wa -k identity -w
+      /etc/shadow -p wa -k identity -w /etc/security/opasswd -p wa -k identity
+    marker: "# {mark} ANSIBLE MANAGED BLOCK for usergroup_modification"
+
+- name: Reload rules
+  command: augenrules --load
