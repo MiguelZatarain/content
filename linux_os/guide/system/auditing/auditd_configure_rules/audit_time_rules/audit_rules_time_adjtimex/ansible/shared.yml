@@ -24,7 +24,7 @@
     create: yes
     block: |
       -a always,exit -F arch=b32 -S adjtimex -k timechange
-    marker: "<!-- {mark} ANSIBLE MANAGED BLOCK for adjtimex -->"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK for adjtimex"
   when: ansible_architecture == "x86_32"
 
 - name: Adding remediation to audit.rules - 64 bits
@@ -34,8 +34,8 @@
     block: |
       -a always,exit -F arch=b64 -S adjtimex -k time-change
       -a always,exit -F arch=b32 -S adjtimex -k timechange
-    marker: "<!-- {mark} ANSIBLE MANAGED BLOCK for adjtimex -->"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK for adjtimex"
   when: ansible_architecture == "x86_64"
 
 - name: Reload rules
-  command: augenrules
+  command: augenrules --load
