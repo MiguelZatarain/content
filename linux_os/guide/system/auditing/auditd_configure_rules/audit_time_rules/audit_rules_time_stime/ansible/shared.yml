@@ -20,7 +20,7 @@
 
 - name: Adding remediation to audit.rules - 32 bits
   blockinfile:
-    path: {{ ruta }}
+    path: "{{ ruta }}"
     create: yes
     block: |
       -a always,exit -F arch=b32 -S stime -k timechange
@@ -28,7 +28,7 @@
 
 - name: Adding remediation to audit.rules - 64 bits
   blockinfile:
-    path: {{ ruta }}
+    path: "{{ ruta }}"
     create: yes
     block: |
       -a always,exit -F arch=b32 -S stime -k timechange

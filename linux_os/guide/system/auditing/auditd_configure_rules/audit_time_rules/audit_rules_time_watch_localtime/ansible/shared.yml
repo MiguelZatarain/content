@@ -20,7 +20,7 @@
 
 - name: Adding remediation to audit.rules - 64 bits
   blockinfile:
-    path: {{ ruta }}
+    path: "{{ ruta }}"
     create: yes
     block: |
       -w /etc/localtime -p wa -k time-change
