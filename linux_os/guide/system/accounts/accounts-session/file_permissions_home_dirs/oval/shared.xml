@@ -8,37 +8,54 @@
       </affected>
       <description>File permissions should be set correctly for the home directories for all user accounts.</description>
     </metadata>
-    <criteria >
-      <criterion comment="home directories" test_ref="test_file_permissions_home_dirs" negate="true" />
+    <criteria operator="AND">
+    <!-- Check if all user home directories exist. -->
+      <criterion test_ref="test_accounts_user_interactive_home_directory_defined" />
+    <!-- Check permissions. -->
+      <criterion comment="home directories" test_ref="test_file_permissions_home_dirs"/>
     </criteria>
   </definition>
 
-  <unix:file_test check="all" check_existence="at_least_one_exists" comment="home directories" id="test_file_permissions_home_dirs" version="1">
-    <unix:object object_ref="object_file_permissions_home_dirs" />
+
+  <unix:file_test check="all" check_existence="at_least_one_exists" comment="/var/log/audit files mode 0600" id="test_file_permissions_home_dirs" version="1">
+    <unix:object object_ref="object_file_permissions_home_dir_get_directories_defined_in_passwd" />
     <unix:state state_ref="state_home_dirs_wrong_perm" />
   </unix:file_test>
 
-  <unix:file_object comment="home directories" id="object_file_permissions_home_dirs" version="2">
-    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="1" recurse_file_system="all" />
-    <unix:path operation="equals">/home</unix:path>
-    <unix:filename xsi:nil="true" />
-    <filter action="exclude">state_home_dirs_home_itself</filter>
-    <filter action="include">state_home_dirs_wrong_perm</filter>
+    <!-- OVAL object to collect content of /etc/passwd file -->
+  <ind:textfilecontent54_object id="object_file_permissions_home_dir_get_passwd_paths" version="1">
+    <ind:filepath>/etc/passwd</ind:filepath>
+    <!-- interactive users home path with shell!=nologin from /etc/passwd (6th column) captured as subexpression of this object -->
+    <ind:pattern operation="pattern match">.*:x:[0-9]{4,}:[0-9]+:.*:(.*):(?!.*nologin)</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- OVAL variable to hold all the different paths from /etc/passwd -->
+  <local_variable id="var_file_permissions_home_dir_string_passwd_paths" comment="Paths from /etc/passwd" datatype="string" version="1">
+    <object_component item_field="subexpression" object_ref="object_file_permissions_home_dir_get_passwd_paths" />
+  </local_variable>
+
+  <unix:file_object comment="Directories that exist and are defined in passwd" id="object_file_permissions_home_dir_get_directories_defined_in_passwd" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <unix:path operation="equals">/</unix:path>
+    <unix:filename xsi:nil="true"/>
+    <filter action="include">state_file_permissions_home_dirs_defined_passwd</filter>
+    <!-- don't search /proc, /sys, and some special files from /selinux -->
+    <filter action="exclude">state_file_permissions_unauthorized_world_write_exclude_special_selinux_files</filter>
+    <filter action="exclude">state_file_permissions_unauthorized_world_write_exclude_proc</filter>
+    <filter action="exclude">state_file_permissions_unauthorized_world_write_exclude_sys</filter>
   </unix:file_object>
 
-  <unix:file_state id="state_home_dirs_home_itself" version="1">
-    <!-- Exclude /home directory itself from the check. Check /home/* directories only. -->
-    <unix:path operation="equals">/home</unix:path>
+  <!-- Check if the current path is defined in passwd -->
+  <unix:file_state id="state_file_permissions_home_dirs_defined_passwd" version="1">
+    <unix:path operation="equals" var_ref="var_string_passwd_paths" var_check="at least one" />
   </unix:file_state>
 
-  <unix:file_state id="state_home_dirs_wrong_perm" version="1" operator="OR">
-    <unix:suid datatype="boolean">true</unix:suid>
-    <unix:sgid datatype="boolean">true</unix:sgid>
-    <unix:sticky datatype="boolean">true</unix:sticky>
-    <unix:gwrite datatype="boolean">true</unix:gwrite>
-    <unix:oread datatype="boolean">true</unix:oread>
-    <unix:owrite datatype="boolean">true</unix:owrite>
-    <unix:oexec datatype="boolean">true</unix:oexec>
+  <unix:file_state id="state_home_dirs_wrong_perm" version="1" operator="AND">
+    <unix:gwrite datatype="boolean">false</unix:gwrite>
+    <unix:oread datatype="boolean">false</unix:oread>
+    <unix:owrite datatype="boolean">false</unix:owrite>
+    <unix:oexec datatype="boolean">false</unix:oexec>
   </unix:file_state>
 
 </def-group>

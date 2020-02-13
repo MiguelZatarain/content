@@ -7,3 +7,4 @@ description: |-
 
 selections:
     - accounts_user_interactive_home_directory_defined
+    - file_permissions_home_dirs
