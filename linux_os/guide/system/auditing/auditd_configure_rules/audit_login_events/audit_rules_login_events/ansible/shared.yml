@@ -18,6 +18,11 @@
     ruta: "/etc/audit/rules.d/login_events.rules"
   when: stat_result.stat.exists == True
 
+- name: Check if it's inmutable
+  command: grep -qi "^\s*[^#]*-e 2" /etc/audit.rules
+  ignore_errors: True
+  register: is_inmutable
+
 - name: Adding remediation to audit.rules
   blockinfile:
     path: "{{ ruta }}"
@@ -30,5 +35,4 @@
 
 - name: Reload rules
   command: augenrules --load
-
-
+  when: is_inmutable.rc == 1
