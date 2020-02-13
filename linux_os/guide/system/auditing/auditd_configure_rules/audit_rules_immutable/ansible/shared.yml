@@ -15,7 +15,7 @@
 
 - name: Set variable if /etc/audit/rules.d exists
   set_fact:
-    ruta: "/etc/audit/rules.d/mac_modification.rules"
+    ruta: "/etc/audit/rules.d/zz_immutable.rules"
   when: stat_result.stat.exists == True
 
 - name: Adding remediation to audit.rules
@@ -23,20 +23,8 @@
     path: "{{ ruta }}"
     create: yes
     block: |
-      -w /etc/selinux/ -p wa -k MAC-policy
-      -w /usr/share/selinux/ -p wa -k MAC-policy
-    marker: "# {mark} ANSIBLE MANAGED BLOCK for mac_modification"
-  when: ansible_selinux != "false"
-
-- name: Check if it's inmutable
-  command: grep -qi "^\s*[^#]*-e 2" /etc/audit.rules
-  ignore_errors: True
-  register: is_inmutable
-
-- debug:
-    msg: Reboot required
-  when: is_inmutable.rc == 0
+      -e 2
+    marker: "# {mark} ANSIBLE MANAGED BLOCK for immutable"
 
 - name: Reload rules
   command: augenrules --load
-  when: is_inmutable.rc == 1

@@ -30,5 +30,15 @@
       -w /etc/security/opasswd -p wa -k identity
     marker: "# {mark} ANSIBLE MANAGED BLOCK for usergroup_modification"
 
+- name: Check if it's inmutable
+  command: grep -qi "^\s*[^#]*-e 2" /etc/audit.rules
+  ignore_errors: True
+  register: is_inmutable
+
+- debug:
+    msg: Reboot required
+  when: is_inmutable.rc == 0
+
 - name: Reload rules
   command: augenrules --load
+  when: is_inmutable.rc == 1
