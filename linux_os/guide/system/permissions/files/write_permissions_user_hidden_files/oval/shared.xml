@@ -16,18 +16,35 @@
     </criteria>
   </definition>
 
-    <unix:file_test check="all" check_existence="none_exist" comment="Ensure user hidden files are not world-witable or group-writable" id="test_write_permissions_user_hidden_files" version="1">
-    <unix:object object_ref="object_write_permissions_user_hidden_files" />
+  <unix:file_test check="all" check_existence="none_exist" comment="/var/log/audit files mode 0600" id="test_write_permissions_user_hidden_files" version="1">
+    <unix:object object_ref="object_file_permissions_home_dir_get_directories_defined_in_passwd" />
   </unix:file_test>
 
-  <unix:file_object comment="Ensure user hidden files are not world-witable or group-writable" id="object_write_permissions_user_hidden_files" version="1">
-    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="all" />
-    <unix:path operation="equals">/home</unix:path>
+    <!-- OVAL object to collect content of /etc/passwd file -->
+  <ind:textfilecontent54_object id="object_write_permissions_user_hidden_files_get_home_dirs" version="1">
+    <ind:filepath>/etc/passwd</ind:filepath>
+    <!-- interactive users home path with shell!=nologin from /etc/passwd (6th column) captured as subexpression of this object -->
+    <ind:pattern operation="pattern match">.*:x:[0-9]{4,}:[0-9]+:.*:(.*):(?!.*nologin)</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- OVAL variable to hold all the different paths from /etc/passwd -->
+  <local_variable id="var_write_permissions_user_hidden_files_get_home_dirs" comment="Paths from /etc/passwd" datatype="string" version="1">
+    <object_component item_field="subexpression" object_ref="object_write_permissions_user_hidden_files_get_home_dirs" />
+  </local_variable>
+
+  <unix:file_object comment="Directories that exist and are defined in passwd" id="object_file_permissions_home_dir_get_directories_defined_in_passwd" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <unix:path var_ref="var_write_permissions_user_hidden_files_get_home_dirs" var_check="at least one" />
     <unix:filename operation="pattern match">^[.].*</unix:filename>
-    <filter action="include">state_write_permissions_user_hidden_files</filter>
+    <filter action="include">state_write_permissions_user_hidden_files_permissions</filter>
+    <!-- don't search /proc, /sys, and some special files from /selinux -->
+    <filter action="exclude">state_file_permissions_unauthorized_world_write_exclude_special_selinux_files</filter>
+    <filter action="exclude">state_file_permissions_unauthorized_world_write_exclude_proc</filter>
+    <filter action="exclude">state_file_permissions_unauthorized_world_write_exclude_sys</filter>
   </unix:file_object>
 
-  <unix:file_state id="state_write_permissions_user_hidden_files" version="1" operator="OR">
+  <unix:file_state id="state_write_permissions_user_hidden_files_permissions" version="1" operator="OR">
     <unix:gwrite datatype="boolean">true</unix:gwrite>
     <unix:owrite datatype="boolean">true</unix:owrite>
   </unix:file_state>
