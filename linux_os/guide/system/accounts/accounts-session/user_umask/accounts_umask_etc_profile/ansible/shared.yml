@@ -8,5 +8,24 @@
 - name: Set user umask in /etc/profile
   replace:
       path: /etc/profile
-      regexp: "umask.*"
+      regexp: "#*umask.*"
       replace: "umask {{ var_accounts_user_umask }}"
+      backup  : yes
+  register  : checkIfLineIsHere
+
+# If the line not is here, I add it
+- name: Add line
+  lineinfile:
+      state   : present
+      dest    : /etc/profile
+      line    : "umask {{ var_accounts_user_umask }}"
+      insertafter: EOF
+  when: checkIfLineIsHere.changed == false
+
+# If the line is here, I still want this line in the file, Then restore it
+- name: Restore the searched line.
+  lineinfile:
+      state   : present
+      dest    : /etc/profile
+      line    : "umask {{ var_accounts_user_umask }}"
+  when: checkIfLineIsHere.changed

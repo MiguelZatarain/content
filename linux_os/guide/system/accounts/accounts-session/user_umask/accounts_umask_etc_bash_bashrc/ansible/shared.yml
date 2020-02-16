@@ -5,9 +5,9 @@
 # disruption = low
 - (xccdf-var var_accounts_user_umask)
 
-- name: Set user umask in /etc/csh.cshrc
+- name: Set user umask in /etc/bash.bashrc
   replace:
-      path: /etc/csh.cshrc
+      path: /etc/bash.bashrc
       regexp: "#*umask.*"
       replace: "umask {{ var_accounts_user_umask }}"
       backup  : yes
@@ -17,7 +17,7 @@
 - name: Add line
   lineinfile:
       state   : present
-      dest    : /etc/csh.cshrc
+      dest    : /etc/bash.bashrc
       line    : "umask {{ var_accounts_user_umask }}"
       insertafter: EOF
   when: checkIfLineIsHere.changed == false
@@ -26,6 +26,6 @@
 - name: Restore the searched line.
   lineinfile:
       state   : present
-      dest    : /etc/csh.cshrc
+      dest    : /etc/bash.bashrc
       line    : "umask {{ var_accounts_user_umask }}"
   when: checkIfLineIsHere.changed
