@@ -4,13 +4,35 @@
 # complexity = low
 # disruption = low
 ### To set the users, please execute like ansible-playbook playbook.yml --extra-vars "users=***USER1 USER2***"
+- (xccdf-var var_sshd_limit_user_access)
 
 - name: Ensure limit user access set to a variable
   lineinfile:
     path: /etc/ssh/sshd_config
-    regexp: '\#?DenyUsers.*'
-    line: DenyUsers {{ users }}
+    regexp: '\#?AllowGroups.*'
+    line: AllowGroups {{ var_sshd_limit_user_access }}
     state: present
+  register: sshd
+
+- name: Ensure DenyUsers directive is not set
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '\#?DenyUsers.*'
+    state: absent
+  register: sshd
+
+- name: Ensure AllowUsers directive is not set
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '\#?AllowUsers.*'
+    state: absent
+  register: sshd
+
+- name: Ensure DenyGroups directive is not set
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '\#?DenyGroups.*'
+    state: absent
   register: sshd
 
 - name: Restart service SSHD

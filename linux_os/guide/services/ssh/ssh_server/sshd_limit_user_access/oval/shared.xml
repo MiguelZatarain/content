@@ -1,0 +1,100 @@
+
+<def-group>
+  <definition class="compliance" id="sshd_limit_user_access" version="1">
+    <metadata>
+      <title>Limit users ssh access</title>
+<affected family="unix">
+<platform>SUSE Linux Enterprise 12</platform>
+</affected>
+      <description>Look for parameter 'AllowGroups' with the right value and check that DenyUsers, AllowUsers and DenyGroups are not set</description>
+    </metadata>
+    <criteria comment="sshd is configured correctly or is not installed"
+    operator="OR"><criteria comment="sshd is not installed" operator="AND">
+        <extend_definition comment="sshd is not required or requirement is unset"
+        definition_ref="sshd_not_required_or_unset" />
+        
+        <extend_definition comment="rpm package openssh removed"
+        definition_ref="package_openssh_removed" />
+        
+      </criteria><criteria comment="sshd is installed and configured" operator="AND">
+        <extend_definition comment="sshd is required or requirement is unset"
+        definition_ref="sshd_required_or_unset" />
+        
+        <extend_definition comment="rpm package openssh installed"
+        definition_ref="package_openssh_installed" />
+        
+      
+    <criteria comment="sshd is configured correctly"
+    operator="AND">
+                <criterion comment="Check the AllowGroups in /etc/ssh/sshd_config"
+      test_ref="test_sshd_set_allowgroups" />
+
+          <criterion comment="Check the absence of DenyUsers in /etc/ssh/sshd_config"
+      test_ref="test_sshd_denyusers_not_present" />
+
+          <criterion comment="Check the absence of AllowUsers in /etc/ssh/sshd_config"
+      test_ref="test_sshd_allowusers_not_present" />
+
+          <criterion comment="Check the absence of DenyGroups in /etc/ssh/sshd_config"
+      test_ref="test_sshd_denygroups_not_present" />
+    </criteria>
+    </criteria> 
+    </criteria>
+  </definition>
+  
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="tests the value of AllowGroups setting in the /etc/ssh/sshd_config file"
+  id="test_sshd_set_allowgroups" version="1">
+  <ind:object object_ref="obj_sshd_set_allowgroups" />
+  <ind:state state_ref="state_sshd_set_allowgroups" />
+  </ind:textfilecontent54_test>
+  
+  <ind:textfilecontent54_object id="obj_sshd_set_allowgroups" version="1">
+    <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
+    <ind:pattern operation="pattern match">^[ \t]*(?i)AllowGroups(?-i)[ \t]+(.+?)[ \t]*(?:$|#)</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  
+  <ind:textfilecontent54_state id="state_sshd_set_allowgroups" version="1">
+    <ind:subexpression operation="equals" var_ref="var_sshd_limit_user_access" />
+  </ind:textfilecontent54_state>
+
+  <external_variable comment="Allowed groups" datatype="string" id="var_sshd_limit_user_access" version="1" />
+  
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  comment="tests the absence of DenyUsers setting in the /etc/ssh/sshd_config file"
+  id="test_sshd_denyusers_not_present" version="1">
+  <ind:object object_ref="obj_sshd_denyusers_not_present" />
+  </ind:textfilecontent54_test>
+  
+  <ind:textfilecontent54_object id="obj_sshd_denyusers_not_present" version="1">
+    <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
+    <ind:pattern operation="pattern match">^[ \t]*(?i)DenyUsers(?-i)[ \t]+</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  comment="tests the absence of AllowUsers setting in the /etc/ssh/sshd_config file"
+  id="test_sshd_allowusers_not_present" version="1">
+  <ind:object object_ref="obj_sshd_allowusers_not_present" />
+  </ind:textfilecontent54_test>
+  
+  <ind:textfilecontent54_object id="obj_sshd_allowusers_not_present" version="1">
+    <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
+    <ind:pattern operation="pattern match">^[ \t]*(?i)AllowUsers(?-i)[ \t]+</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  comment="tests the absence of DenyGroups setting in the /etc/ssh/sshd_config file"
+  id="test_sshd_denygroups_not_present" version="1">
+  <ind:object object_ref="obj_sshd_denygroups_not_present" />
+  </ind:textfilecontent54_test>
+  
+  <ind:textfilecontent54_object id="obj_sshd_denygroups_not_present" version="1">
+    <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
+    <ind:pattern operation="pattern match">^[ \t]*(?i)DenyGroups(?-i)[ \t]+</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

@@ -1,0 +1,12 @@
+documentation_complete: true
+
+title: 'Vendor Approved Time Servers'
+
+description: 'The list of vendor-approved time servers'
+
+type: string
+
+interactive: false
+
+options:
+    default: sshusers

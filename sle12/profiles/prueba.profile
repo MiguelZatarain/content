@@ -6,4 +6,5 @@ description: |-
     Write the profile description here
 
 selections:
-    - bios_enable_execution_restrictions
+    - sshd_limit_user_access
+    - sshd_enable_warning_banner
