@@ -1,0 +1,15 @@
+- hosts: localhost
+  gather_facts: no
+  tasks:
+  - command: grep -o -E '.+:' /root/wok/wifi
+    register: cat
+
+  - debug:
+      msg: "{{ cat }}"
+
+  - debug:
+      msg: "{{ cat.stdout.split(':\n')[2] }}"
+
+  - debug:
+      msg: ip link set "{{ item }}" down
+    with_items: "{{ cat.stdout.replace('\n','').split(':') }}"
