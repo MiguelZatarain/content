@@ -31,7 +31,7 @@
     marker: "# {mark} ANSIBLE MANAGED BLOCK for usergroup_modification"
 
 - name: Check if it's inmutable
-  command: grep -qi "^\s*[^#]*-e 2" /etc/audit.rules
+  command: grep -qi "^\s*[^#]*-e 2" /etc/audit/audit.rules
   ignore_errors: True
   register: is_inmutable
 
