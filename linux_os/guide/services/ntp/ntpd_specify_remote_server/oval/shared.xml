@@ -20,13 +20,20 @@
   comment="Ensure at least one ntpd NTP server is set" id="test_ntp_remote_server"
   version="1">
     <ind:object object_ref="obj_ntp_remote_server" />
+    <ind:state state_ref="state_ntp_remote_server" />
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object comment="Ensure at least one ntpd NTP server is set"
   id="obj_ntp_remote_server" version="1">
     <ind:filepath>/etc/ntp.conf</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*server[\s]+.+$</ind:pattern>
+    <ind:pattern operation="pattern match">^[ ]*server[ ]+(.*)[ ]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_ntp_remote_server" version="1">
+    <ind:subexpression operation="equals" var_ref="var_ntpd_remote_server" />
+  </ind:textfilecontent54_state>
+
+  <external_variable comment="ntp remote server" datatype="string" id="var_ntpd_remote_server" version="1" />
 
 </def-group>
