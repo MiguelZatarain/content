@@ -1,0 +1,51 @@
+# platform = multi_platform_fedora,multi_platform_rhel,multi_platform_rhv,multi_platform_sle
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+- name: Set variable ruta
+  set_fact:
+    ruta: "/etc/audit/audit.rules"
+
+- name: Check if /etc/audit/rules.d exists
+  stat:
+    path: /etc/audit/rules.d
+  register: stat_result
+
+- name: Set variable if /etc/audit/rules.d exists
+  set_fact:
+    ruta: "/etc/audit/rules.d/privileged_commands_mount.rules"
+  when: stat_result.stat.exists == True
+
+- name: Adding remediation to audit.rules - 32 bits
+  blockinfile:
+    path: "{{ ruta }}"
+    create: yes
+    block: |
+      -a always,exit -F arch=b32 -S mount -F auid>=1000 -F auid!=4294967295 -k mounts
+    marker: "# {mark} ANSIBLE MANAGED BLOCK for privileged_commands_mount"
+  when: ansible_architecture == "x86_32"
+
+- name: Adding remediation to audit.rules - 64 bits
+  blockinfile:
+    path: "{{ ruta }}"
+    create: yes
+    block: |
+      -a always,exit -F arch=b64 -S mount -F auid>=1000 -F auid!=4294967295 -k mounts
+      -a always,exit -F arch=b32 -S mount -F auid>=1000 -F auid!=4294967295 -k mounts
+    marker: "# {mark} ANSIBLE MANAGED BLOCK for privileged_commands_mount"
+  when: ansible_architecture == "x86_64"
+
+- name: Check if it's inmutable
+  command: grep -qi "^\s*[^#]*-e 2" /etc/audit/audit.rules
+  ignore_errors: True
+  register: is_inmutable
+
+- debug:
+    msg: Reboot required
+  when: is_inmutable.rc == 0
+
+- name: Reload rules
+  command: augenrules --load
+  when: is_inmutable.rc == 1

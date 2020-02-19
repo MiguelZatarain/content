@@ -3,6 +3,19 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
+- name: Set variable ruta
+  set_fact:
+    ruta: "/etc/audit/audit.rules"
+
+- name: Check if /etc/audit/rules.d exists
+  stat:
+    path: /etc/audit/rules.d
+  register: stat_result
+
+- name: Set variable if /etc/audit/rules.d exists
+  set_fact:
+    ruta: "/etc/audit/rules.d/privileged_commands.rules"
+  when: stat_result.stat.exists == True
 
 - name: Search for privileged commands
   shell: find / -xdev -type f -perm -4000 -o -type f -perm -2000 2>/dev/null
@@ -13,44 +26,27 @@
   register: find_result
   changed_when: false
 
-# Inserts/replaces the rule in /etc/audit/rules.d
+- debug:
+    msg: "{{ find_result }}"
 
-- name: Search /etc/audit/rules.d for audit rule entries
-  find:
-    paths: "/etc/audit/rules.d"
-    recurse: no
-    contains: "^.*path={{ item }} .*$"
-    patterns: "*.rules"
+- name: Adding remediation to audit.rules
+  lineinfile:
+    path: "{{ ruta }}"
+    create: yes
+    line: "-a always,exit -F path={{ item }} -F perm=x -F auid>=1000 -F auid!=4294967295 -k privileged"
+    regexp: "'{{ item }}' \\s"
   with_items:
     - "{{ find_result.stdout_lines }}"
-  register: files_result
 
-- name: Overwrites the rule in rules.d
-  lineinfile:
-    path: "{{ item.1.path }}"
-    line: '-a always,exit -F path={{ item.0.item }} -F perm=x -F auid>={{{ auid }}} -F auid!=unset -F key=special-config-changes'
-    create: no
-    regexp: "^.*path={{ item.0.item }} .*$"
-  with_subelements:
-    - "{{ files_result.results }}"
-    - files
+- name: Check if it's inmutable
+  command: grep -qi "^\s*[^#]*-e 2" /etc/audit/audit.rules
+  ignore_errors: True
+  register: is_inmutable
 
-- name: Adds the rule in rules.d
-  lineinfile:
-    path: /etc/audit/rules.d/privileged.rules
-    line: '-a always,exit -F path={{ item.item }} -F perm=x -F auid>={{{ auid }}} -F auid!=unset -F key=special-config-changes'
-    create: yes
-  with_items:
-    - "{{ files_result.results }}"
-  when: files_result.results is defined and item.matched == 0
+- debug:
+    msg: Reboot required
+  when: is_inmutable.rc == 0
 
-# Adds/overwrites the rule in /etc/audit/audit.rules
-
-- name: Inserts/replaces the rule in audit.rules
-  lineinfile:
-    path: /etc/audit/audit.rules
-    line: '-a always,exit -F path={{ item.item }} -F perm=x -F auid>={{{ auid }}} -F auid!=unset -F key=special-config-changes'
-    create: yes
-    regexp: "^.*path={{ item.item }} .*$"
-  with_items:
-    - "{{ files_result.results }}"
+- name: Reload rules
+  command: augenrules --load
+  when: is_inmutable.rc == 1
