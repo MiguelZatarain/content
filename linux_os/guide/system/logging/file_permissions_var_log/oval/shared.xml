@@ -1,0 +1,37 @@
+<def-group>
+  <definition class="compliance" id="file_permissions_var_log" version="1">
+    <metadata>
+      <title>Proper Permissions on /var/log files</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+        <platform>multi_platform_sle</platform>
+      </affected>
+      <description>File permissions should be set correctly for all /var/log files</description>
+    </metadata>
+    <criteria operator="AND">
+    <!-- Check permissions. -->
+      <criterion comment="home directories" test_ref="test_file_permissions_var_log"/>
+    </criteria>
+  </definition>
+
+
+  <unix:file_test check="all" check_existence="none_exists" comment="/var/log files permissions" id="test_file_permissions_var_log" version="1">
+    <unix:object object_ref="object_file_permissions_var_log" />
+  </unix:file_test>
+
+  <unix:file_object comment="/var/log files" id="object_file_permissions_var_log" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <unix:path operation="equals">/var/log</unix:path>
+    <unix:filename operation="pattern match">^.*$</unix:filename>
+    <filter action="include">state_file_permissions_var_log</filter>
+  </unix:file_object>
+
+  <unix:file_state id="state_file_permissions_var_log" version="1" operator="OR">
+    <unix:gwrite datatype="boolean">true</unix:gwrite>
+    <unix:gexec datatype="boolean">true</unix:gexec>
+    <unix:oread datatype="boolean">true</unix:oread>
+    <unix:owrite datatype="boolean">true</unix:owrite>
+    <unix:oexec datatype="boolean">true</unix:oexec>
+  </unix:file_state>
+
+</def-group>
