@@ -15,7 +15,7 @@
   </definition>
 
 
-  <unix:file_test check="all" check_existence="none_exists" comment="/var/log files permissions" id="test_file_permissions_var_log" version="1">
+  <unix:file_test check="all" check_existence="none_exist" comment="/var/log files permissions" id="test_file_permissions_var_log" version="1">
     <unix:object object_ref="object_file_permissions_var_log" />
   </unix:file_test>
 

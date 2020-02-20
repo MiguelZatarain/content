@@ -4,5 +4,19 @@
 # complexity = low
 # disruption = low
 
-- name: Cmbiar permisos
+- name: Search for log files
+  shell: find /var/log -type f 2>/dev/null
+  args:
+    warn: False
+    executable: /bin/bash
+  check_mode: no
+  register: find_result
+  changed_when: false
+
+- name: Apply permissions
+  file:
+    path: "{{ item }}"
+    mode: g-wx,o-rwx
+  with_items:
+    - "{{ find_result.stdout_lines }}"
 
