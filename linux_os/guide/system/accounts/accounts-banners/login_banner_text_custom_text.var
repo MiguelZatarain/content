@@ -1,0 +1,12 @@
+documentation_complete: true
+
+title: 'Login banner custom text pattern'
+
+description: 'Login banner custom text pattern'
+
+type: string
+
+interactive: false
+
+options:
+    default: Te estas conectando a un equipo restringido

@@ -1,5 +1,5 @@
 <def-group>
-  <definition class="compliance" id="banner_etc_issue" version="2">
+  <definition class="compliance" id="banner_etc_issue_net" version="2">
     <metadata>
       <title>System Login Banner Compliance</title>
       <affected family="unix">
@@ -10,19 +10,19 @@
         <platform>multi_platform_sle</platform>
         <platform>multi_platform_wrlinux</platform>
       </affected>
-      <description>The system login banner text should be set correctly.</description>
+      <description>The /etc/issue.net banner text should be set correctly.</description>
     </metadata>
     <criteria>
-      <criterion comment="/etc/issue is set appropriately" test_ref="test_banner_etc_issue" />
+      <criterion comment="/etc/issue_net is set appropriately" test_ref="test_banner_etc_issue_net" />
     </criteria>
   </definition>
 
-  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="correct banner in /etc/issue" id="test_banner_etc_issue" version="1">
-    <ind:object object_ref="object_banner_etc_issue" />
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="correct banner in /etc/issue_net" id="test_banner_etc_issue_net" version="1">
+    <ind:object object_ref="object_banner_etc_issue_net" />
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_object id="object_banner_etc_issue" version="1">
-    <ind:filepath>/etc/issue</ind:filepath>
+  <ind:textfilecontent54_object id="object_banner_etc_issue_net" version="1">
+    <ind:filepath>/etc/issue.net</ind:filepath>
     <ind:pattern var_ref="login_banner_text_custom_text_pattern" operation="pattern match" />
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
