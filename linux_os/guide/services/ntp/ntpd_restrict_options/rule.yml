@@ -1,0 +1,18 @@
+documentation_complete: true
+
+prodtype: multi_platform_sle,sle11,sle12
+
+title: 'Specify restrict options in /etc/ntp.conf'
+
+description: |-
+    Añade las restricciones a /etc/ntp.conf.
+
+rationale: |-
+    Añade las restricciones a /etc/ntp.conf.
+
+severity: high
+
+ocil_clause: 'this is not the case'
+
+ocil: |-
+    To check permissions run ls -l /var/log.
