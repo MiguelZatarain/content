@@ -1,0 +1,21 @@
+documentation_complete: true
+
+title: 'Verify Group Who Owns hosts.allow File'
+
+description: '{{{ describe_file_group_owner(file="/etc/hosts.allow", group="root") }}}'
+
+rationale: |-
+    El archivo /etc/hosts.allow contiene información de red que utilizan muchas aplicaciones y, por
+lo tanto, debe ser legible para que estas aplicaciones funcionen.
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/hosts.allow", group="root") }}}'
+
+ocil: '{{{ ocil_file_group_owner(file="/etc/hosts.allow", group="root") }}}'
+
+template:
+    name: file_groupowner
+    vars:
+        filepath: /etc/hosts.allow
+        filegid: '0'
