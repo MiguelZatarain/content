@@ -11,11 +11,47 @@
       </affected>
       <description>Audit rules should be configured to log successful and unsuccessful login and logout events.</description>
     </metadata>
-    <criteria operator="AND">
-      <extend_definition comment="audit tallylog" definition_ref="audit_rules_login_events_tallylog" />
-      <extend_definition comment="audit faillock" definition_ref="audit_rules_login_events_faillock" />
-      <extend_definition comment="audit lastlog" definition_ref="audit_rules_login_events_lastlog" />
+    <criteria operator="OR">
+      <criteria operator="AND">
+        <extend_definition comment="audit tallylog" definition_ref="audit_rules_login_events_tallylog" />
+        <extend_definition comment="audit faillock" definition_ref="audit_rules_login_events_faillock" />
+        <extend_definition comment="audit lastlog" definition_ref="audit_rules_login_events_lastlog" />
+      </criteria>
+      <criteria operator="AND">
+        <criterion comment="faillock" test_ref="test_audit_rules_login_events_faillock_this" />
+        <criterion comment="tallylog" test_ref="test_audit_rules_login_events_tallylog_this" />
+        <criterion comment="lastlog" test_ref="test_audit_rules_login_events_lastlog_this" />
+      </criteria>
     </criteria>
+
   </definition>
+
+
+  <ind:textfilecontent54_test check="all" comment="login tallylog" id="test_audit_rules_login_events_faillock_this" version="1">
+    <ind:object object_ref="object_audit_rules_login_events_faillock_this" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_rules_login_events_faillock_this" version="1">
+    <ind:filepath operation="pattern match">^/etc/audit/audit.rules$</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*-w[\s]*/var/log/faillog[\s]*-p[\s]*wa[\s]*-k[\s]*logins[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="login tallylog" id="test_audit_rules_login_events_tallylog_this" version="1">
+    <ind:object object_ref="object_audit_rules_login_events_tallylog_this" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_rules_login_events_tallylog_this" version="1">
+    <ind:filepath operation="pattern match">^/etc/audit/audit.rules$</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*-w[\s]*/var/log/tallylog[\s]*-p[\s]*wa[\s]*-k[\s]*logins[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="login lastlog" id="test_audit_rules_login_events_lastlog_this" version="1">
+    <ind:object object_ref="object_audit_rules_login_events_lastlog_this" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_rules_login_events_lastlog_this" version="1">
+    <ind:filepath operation="pattern match">^/etc/audit/audit.rules$</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*-w[\s]*/var/log/lastlog[\s]*-p[\s]*wa[\s]*-k[\s]*logins*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
 
 </def-group>

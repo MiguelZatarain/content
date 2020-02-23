@@ -37,6 +37,15 @@
         <extend_definition comment="audit augenrules setdomainname" definition_ref="audit_rules_networkconfig_modification_domainname" />
       </criteria>
 
+      <criteria operator="AND">
+        <criterion comment="audit /etc/issue auditctl" test_ref="test_rules_networkconfig_sethostname64_custom" />
+        <criterion comment="audit /etc/issue.net auditctl" test_ref="test_rules_networkconfig_sethostname32_custom" />
+        <criterion comment="audit /etc/hosts auditctl" test_ref="test_rules_networkconfig_issue_custom" />
+        <criterion comment="audit /etc/sysconfig/network auditctl" test_ref="test_rules_networkconfig_issue_net_custom" />
+        <criterion comment="audit /etc/issue.net auditctl" test_ref="test_rules_networkconfig_hosts_custom" />
+        <criterion comment="audit /etc/hosts auditctl" test_ref="test_rules_networkconfig_network_custom" />
+      </criteria>
+
     </criteria>
   </definition>
 
@@ -111,5 +120,91 @@
     <ind:pattern operation="pattern match">^\-w[\s]+/etc/sysconfig/network[\s]+\-p[\s]+\b([rx]*w[rx]*a[rx]*|[rx]*a[rx]*w[rx]*)\b[\s]+(-k[\s]+|-F[\s]+key=)[-\w]+[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
+
+
+
+
+
+
+
+
+
+
+
+  <ind:textfilecontent54_test check="all" comment="audit /etc/issue augenrules" id="test_rules_networkconfig_sethostname64_custom" version="1">
+    <ind:object object_ref="object_rules_networkconfig_sethostname64_custom" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_rules_networkconfig_sethostname64_custom" version="1">
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b64[\s]+-S[\s]+sethostname[\s]+-S[\s]+setdomainname[\s]+-k[\s]+system-locale[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+
+  <ind:textfilecontent54_test check="all" comment="audit /etc/issue augenrules" id="test_rules_networkconfig_sethostname32_custom" version="1">
+    <ind:object object_ref="object_rules_networkconfig_sethostname32_custom" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_rules_networkconfig_sethostname32_custom" version="1">
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b32[\s]+-S[\s]+sethostname[\s]+-S[\s]+setdomainname[\s]+-k[\s]+system-locale[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+
+  <ind:textfilecontent54_test check="all" comment="audit /etc/issue augenrules" id="test_rules_networkconfig_issue_custom" version="1">
+    <ind:object object_ref="object_rules_networkconfig_issue_custom" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_rules_networkconfig_issue_custom" version="1">
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*-w[\s]+/etc/issue[\s]+-p[\s]+wa[\s]+-k[\s]+system-locale[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+
+  <ind:textfilecontent54_test check="all" comment="audit /etc/issue augenrules" id="test_rules_networkconfig_issue_net_custom" version="1">
+    <ind:object object_ref="object_rules_networkconfig_issue_net_custom" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_rules_networkconfig_issue_net_custom" version="1">
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*-w[\s]+/etc/issue.net[\s]+-p[\s]+wa[\s]+-k[\s]+system-locale[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+
+  <ind:textfilecontent54_test check="all" comment="audit /etc/issue augenrules" id="test_rules_networkconfig_hosts_custom" version="1">
+    <ind:object object_ref="object_rules_networkconfig_hosts_custom" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_rules_networkconfig_hosts_custom" version="1">
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*-w[\s]+/etc/hosts[\s]+-p[\s]+wa[\s]+-k[\s]+system-locale[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+
+  <ind:textfilecontent54_test check="all" comment="audit /etc/issue augenrules" id="test_rules_networkconfig_network_custom" version="1">
+    <ind:object object_ref="object_rules_networkconfig_network_custom" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_rules_networkconfig_network_custom" version="1">
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*-w[\s]+/etc/sysconfig/network/[\s]+-p[\s]+wa[\s]+-k[\s]+system-locale[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </def-group>

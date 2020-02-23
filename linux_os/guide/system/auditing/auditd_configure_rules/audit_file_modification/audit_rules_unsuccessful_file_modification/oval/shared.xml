@@ -13,14 +13,68 @@
       <description>Audit rules about the unauthorized access attempts to files (unsuccessful) are enabled.</description>
     </metadata>
 
-    <criteria operator="AND">
-      <extend_definition comment="audit creat" definition_ref="audit_rules_unsuccessful_file_modification_creat" />
-      <extend_definition comment="audit ftruncate" definition_ref="audit_rules_unsuccessful_file_modification_ftruncate" />
-      <extend_definition comment="audit openat" definition_ref="audit_rules_unsuccessful_file_modification_openat" />
-      <extend_definition comment="audit open_by_handle_at" definition_ref="audit_rules_unsuccessful_file_modification_open_by_handle_at" />
-      <extend_definition comment="audit open" definition_ref="audit_rules_unsuccessful_file_modification_open" />
-      <extend_definition comment="audit truncate" definition_ref="audit_rules_unsuccessful_file_modification_truncate" />
+    <criteria operator="OR">
+      <criteria operator="AND">
+        <extend_definition comment="audit creat" definition_ref="audit_rules_unsuccessful_file_modification_creat" />
+        <extend_definition comment="audit ftruncate" definition_ref="audit_rules_unsuccessful_file_modification_ftruncate" />
+        <extend_definition comment="audit openat" definition_ref="audit_rules_unsuccessful_file_modification_openat" />
+        <extend_definition comment="audit open_by_handle_at" definition_ref="audit_rules_unsuccessful_file_modification_open_by_handle_at" />
+        <extend_definition comment="audit open" definition_ref="audit_rules_unsuccessful_file_modification_open" />
+        <extend_definition comment="audit truncate" definition_ref="audit_rules_unsuccessful_file_modification_truncate" />
+      </criteria>
+      <criteria operator="AND">
+        <criterion comment="audit /etc/issue auditctl" test_ref="test_audit_rules_unsuccessful_file_modification_eacces_64" />
+        <criterion comment="audit /etc/issue auditctl" test_ref="test_audit_rules_unsuccessful_file_modification_eacces_32" />
+        <criterion comment="audit /etc/issue auditctl" test_ref="test_audit_rules_unsuccessful_file_modification_eperm_64" />
+        <criterion comment="audit /etc/issue auditctl" test_ref="test_audit_rules_unsuccessful_file_modification_eperm_32" />
+      </criteria>
     </criteria>
+
   </definition>
+
+
+
+
+  <ind:textfilecontent54_test check="all" comment="audit /etc/issue augenrules" id="test_audit_rules_unsuccessful_file_modification_eacces_64" version="1">
+    <ind:object object_ref="object_audit_rules_unsuccessful_file_modification_eacces_64" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_rules_unsuccessful_file_modification_eacces_64" version="1">
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b64[\s]+-S[\s]+creat[\s]+-S[\s]+open[\s]+-S[\s]+openat[\s]+-S[\s]+truncate[\s]+-S[\s]+ftruncate[\s]+-F[\s]+exit=-EACCES[\s]+-F[\s]+auid>=1000[\s]+-F[\s]+auid!=4294967295[\s]+-k[\s]+access[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit /etc/issue augenrules" id="test_audit_rules_unsuccessful_file_modification_eacces_32" version="1">
+    <ind:object object_ref="object_audit_rules_unsuccessful_file_modification_eacces_32" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_rules_unsuccessful_file_modification_eacces_32" version="1">
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b32[\s]+-S[\s]+creat[\s]+-S[\s]+open[\s]+-S[\s]+openat[\s]+-S[\s]+truncate[\s]+-S[\s]+ftruncate[\s]+-F[\s]+exit=-EACCES[\s]+-F[\s]+auid>=1000[\s]+-F[\s]+auid!=4294967295[\s]+-k[\s]+access[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+
+
+  <ind:textfilecontent54_test check="all" comment="audit /etc/issue augenrules" id="test_audit_rules_unsuccessful_file_modification_eperm_64" version="1">
+    <ind:object object_ref="object_audit_rules_unsuccessful_file_modification_eperm_64" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_rules_unsuccessful_file_modification_eperm_64" version="1">
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b64[\s]+-S[\s]+creat[\s]+-S[\s]+open[\s]+-S[\s]+openat[\s]+-S[\s]+truncate[\s]+-S[\s]+ftruncate[\s]+-F[\s]+exit=-EPERM[\s]+-F[\s]+auid>=1000[\s]+-F[\s]+auid!=4294967295[\s]+-k[\s]+access[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit /etc/issue augenrules" id="test_audit_rules_unsuccessful_file_modification_eperm_32" version="1">
+    <ind:object object_ref="object_audit_rules_unsuccessful_file_modification_eperm_32" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_rules_unsuccessful_file_modification_eperm_32" version="1">
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b32[\s]+-S[\s]+creat[\s]+-S[\s]+open[\s]+-S[\s]+openat[\s]+-S[\s]+truncate[\s]+-S[\s]+ftruncate[\s]+-F[\s]+exit=-EPERM[\s]+-F[\s]+auid>=1000[\s]+-F[\s]+auid!=4294967295[\s]+-k[\s]+access[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+
+
+
 
 </def-group>
