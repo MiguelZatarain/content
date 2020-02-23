@@ -1,0 +1,12 @@
+documentation_complete: true
+
+title: 'Remote ntp server'
+
+description: 'The remote ntp server'
+
+type: string
+
+interactive: false
+
+options:
+    default: 129.6.15.28

@@ -1,0 +1,19 @@
+# platform = multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_sle
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+- (xccdf-var var_ntpd_remote_server)
+
+- name: Configure ntp remote server
+  lineinfile:
+    dest: /etc/ntp.conf
+    line: "server {{ var_ntpd_remote_server }}"
+    regexp: '^\s*server\s*.*$'
+    state: present
+    create: yes
+
+- name: Restart ntpd
+  service:
+    name: ntpd
+    state: restarted
