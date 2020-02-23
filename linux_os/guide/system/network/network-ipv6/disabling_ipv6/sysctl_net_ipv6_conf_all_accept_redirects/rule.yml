@@ -1,0 +1,22 @@
+documentation_complete: true
+
+prodtype: fedora,ol7,ol8,rhel7,rhel8,rhv4,sle12,wrlinux1019
+
+title: 'Disable the possibility to accept ICMP redirects'
+
+description: |-
+    Disable the possibility to accept ICMP redirects.
+
+rationale: |-
+    Disable the possibility to accept ICMP redirects.
+
+severity: medium
+
+platform: machine
+
+template:
+    name: sysctl
+    vars:
+        sysctlvar: net.ipv6.conf.all.accept_redirects
+        sysctlval: '0'
+        datatype: int
