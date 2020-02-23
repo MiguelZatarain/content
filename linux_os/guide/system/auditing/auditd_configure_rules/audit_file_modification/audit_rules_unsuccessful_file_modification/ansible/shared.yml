@@ -25,7 +25,7 @@
     block: |
       -a always,exit -F arch=b32 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EACCES -F auid>=1000 -F auid!=4294967295 -k access
       -a always,exit -F arch=b32 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EPERM -F auid>=1000 -F auid!=4294967295 -k access
-    marker: "# {mark} ANSIBLE MANAGED BLOCK for unsuccessful_file_mod"
+    marker: "## {mark} ANSIBLE MANAGED BLOCK for unsuccessful_file_mod"
   when: ansible_architecture == "x86_32"
 
 - name: Adding remediation to audit.rules - 64 bits
@@ -37,7 +37,7 @@
       -a always,exit -F arch=b32 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EACCES -F auid>=1000 -F auid!=4294967295 -k access
       -a always,exit -F arch=b64 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EPERM -F auid>=1000 -F auid!=4294967295 -k access
       -a always,exit -F arch=b32 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EPERM -F auid>=1000 -F auid!=4294967295 -k access
-    marker: "# {mark} ANSIBLE MANAGED BLOCK for unsuccessful_file_mod"
+    marker: "## {mark} ANSIBLE MANAGED BLOCK for unsuccessful_file_mod"
   when: ansible_architecture == "x86_64"
 
 - name: Check if it's inmutable

@@ -24,7 +24,7 @@
     create: yes
     block: |
       -a always,exit -F arch=b32 -S mount -F auid>=1000 -F auid!=4294967295 -k mounts
-    marker: "# {mark} ANSIBLE MANAGED BLOCK for privileged_commands_mount"
+    marker: "## {mark} ANSIBLE MANAGED BLOCK for privileged_commands_mount"
   when: ansible_architecture == "x86_32"
 
 - name: Adding remediation to audit.rules - 64 bits
@@ -34,7 +34,7 @@
     block: |
       -a always,exit -F arch=b64 -S mount -F auid>=1000 -F auid!=4294967295 -k mounts
       -a always,exit -F arch=b32 -S mount -F auid>=1000 -F auid!=4294967295 -k mounts
-    marker: "# {mark} ANSIBLE MANAGED BLOCK for privileged_commands_mount"
+    marker: "## {mark} ANSIBLE MANAGED BLOCK for privileged_commands_mount"
   when: ansible_architecture == "x86_64"
 
 - name: Check if it's inmutable

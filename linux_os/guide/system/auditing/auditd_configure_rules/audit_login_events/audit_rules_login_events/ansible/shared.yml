@@ -26,7 +26,7 @@
       -w /var/run/utmp -p wa -k session
       -w /var/log/wtmp -p wa -k logins
       -w /var/log/btmp -p wa -k logins
-    marker: "# {mark} ANSIBLE MANAGED BLOCK for login_events"
+    marker: "## {mark} ANSIBLE MANAGED BLOCK for login_events"
 
 - name: Check if it's inmutable
   command: grep -qi "^\s*[^#]*-e 2" /etc/audit/audit.rules

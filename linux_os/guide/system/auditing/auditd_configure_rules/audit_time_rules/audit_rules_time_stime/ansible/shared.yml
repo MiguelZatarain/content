@@ -24,7 +24,7 @@
     create: yes
     block: |
       -a always,exit -F arch=b32 -S stime -k timechange
-    marker: "# {mark} ANSIBLE MANAGED BLOCK for stime"
+    marker: "## {mark} ANSIBLE MANAGED BLOCK for stime"
   when: ansible_architecture == "x86_32"
 
 - name: Adding remediation to audit.rules - 64 bits
@@ -33,7 +33,7 @@
     create: yes
     block: |
       -a always,exit -F arch=b32 -S stime -k timechange
-    marker: "# {mark} ANSIBLE MANAGED BLOCK for stime"
+    marker: "## {mark} ANSIBLE MANAGED BLOCK for stime"
   when: ansible_architecture == "x86_64"
 
 - name: Check if it's inmutable

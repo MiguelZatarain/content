@@ -11,13 +11,40 @@
       </affected>
       <description>Audit files deletion events.</description>
     </metadata>
-    <criteria operator="AND">
-      <extend_definition comment="audit rmdir" definition_ref="audit_rules_file_deletion_events_rmdir" />
-      <extend_definition comment="audit unlink" definition_ref="audit_rules_file_deletion_events_unlink" />
-      <extend_definition comment="audit unlinkat" definition_ref="audit_rules_file_deletion_events_unlinkat" />
-      <extend_definition comment="audit rename" definition_ref="audit_rules_file_deletion_events_rename" />
-      <extend_definition comment="audit renameat" definition_ref="audit_rules_file_deletion_events_renameat" />
+
+    <criteria operator="OR">
+      <criteria operator="AND">
+        <extend_definition comment="audit rmdir" definition_ref="audit_rules_file_deletion_events_rmdir" />
+        <extend_definition comment="audit unlink" definition_ref="audit_rules_file_deletion_events_unlink" />
+        <extend_definition comment="audit unlinkat" definition_ref="audit_rules_file_deletion_events_unlinkat" />
+        <extend_definition comment="audit rename" definition_ref="audit_rules_file_deletion_events_rename" />
+        <extend_definition comment="audit renameat" definition_ref="audit_rules_file_deletion_events_renameat" />
+      </criteria>
+      <criteria operator="AND">
+        <criterion comment="faillock" test_ref="audit_rules_file_deletion_events_32b" />
+        <criterion comment="tallylog" test_ref="audit_rules_file_deletion_events_64b" />
+      </criteria>
     </criteria>
+
   </definition>
+
+
+  <ind:textfilecontent54_test check="all" comment="audit /etc/issue augenrules" id="audit_rules_file_deletion_events_32b" version="1">
+    <ind:object object_ref="object_rules_file_deletion_events_32b" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_rules_file_deletion_events_32b" version="1">
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b32[\s]+-S[\s]+unlink[\s]+-S[\s]+unlinkat[\s]+-S[\s]+rename[\s]+-S[\s]+renameat[\s]+-F[\s]+auid>=1000[\s]+-F[\s]+auid!=4294967295[\s]+-k[\s]+delete[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit /etc/issue augenrules" id="audit_rules_file_deletion_events_64b" version="1">
+    <ind:object object_ref="object_rules_file_deletion_events_64b" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_rules_file_deletion_events_64b" version="1">
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b64[\s]+-S[\s]+unlink[\s]+-S[\s]+unlinkat[\s]+-S[\s]+rename[\s]+-S[\s]+renameat[\s]+-F[\s]+auid>=1000[\s]+-F[\s]+auid!=4294967295[\s]+-k[\s]+delete[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
 
 </def-group>

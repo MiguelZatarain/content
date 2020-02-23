@@ -26,7 +26,7 @@
       -w /var/log/faillog -p wa -k logins
       -w /var/log/lastlog -p wa -k logins
       -w /var/log/tallylog -p wa -k logins
-    marker: "# {mark} ANSIBLE MANAGED BLOCK for session_events"
+    marker: "## {mark} ANSIBLE MANAGED BLOCK for session_events"
 
 - name: Check if it's inmutable
   command: grep -qi "^\s*[^#]*-e 2" /etc/audit/audit.rules

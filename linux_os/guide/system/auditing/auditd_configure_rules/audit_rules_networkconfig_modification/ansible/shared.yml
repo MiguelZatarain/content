@@ -28,7 +28,7 @@
       -w /etc/issue.net -p wa -k system-locale
       -w /etc/hosts -p wa -k system-locale
       -w /etc/sysconfig/network/ -p wa -k system-locale
-    marker: "# {mark} ANSIBLE MANAGED BLOCK for networkconfig_modification"
+    marker: "## {mark} ANSIBLE MANAGED BLOCK for networkconfig_modification"
   when: ansible_architecture == "x86_32"
 
 - name: Adding remediation to audit.rules - 64 bits
@@ -42,7 +42,7 @@
       -w /etc/issue.net -p wa -k system-locale
       -w /etc/hosts -p wa -k system-locale
       -w /etc/sysconfig/network/ -p wa -k system-locale
-    marker: "# {mark} ANSIBLE MANAGED BLOCK for networkconfig_modification"
+    marker: "## {mark} ANSIBLE MANAGED BLOCK for networkconfig_modification"
   when: ansible_architecture == "x86_64"
 
 - name: Check if it's inmutable

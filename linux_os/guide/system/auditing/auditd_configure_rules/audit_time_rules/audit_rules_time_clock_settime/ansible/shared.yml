@@ -24,7 +24,7 @@
     create: yes
     block: |
       -a always,exit -F arch=b32 -S clock_settime -k time-change
-    marker: "# {mark} ANSIBLE MANAGED BLOCK for clock_settime"
+    marker: "## {mark} ANSIBLE MANAGED BLOCK for clock_settime"
   when: ansible_architecture == "x86_32"
 
 - name: Adding remediation to audit.rules - 64 bits
@@ -34,7 +34,7 @@
     block: |
       -a always,exit -F arch=b64 -S clock_settime -k time-change
       -a always,exit -F arch=b32 -S clock_settime -k time-change
-    marker: "# {mark} ANSIBLE MANAGED BLOCK for clock_settime"
+    marker: "## {mark} ANSIBLE MANAGED BLOCK for clock_settime"
   when: ansible_architecture == "x86_64"
 
 - name: Check if it's inmutable

@@ -25,7 +25,7 @@
     block: |
       -w /etc/selinux/ -p wa -k MAC-policy
       -w /usr/share/selinux/ -p wa -k MAC-policy
-    marker: "# {mark} ANSIBLE MANAGED BLOCK for mac_modification"
+    marker: "## {mark} ANSIBLE MANAGED BLOCK for mac_modification"
   when: ansible_selinux != "false"
 
 - name: Check if it's inmutable
