@@ -4,5 +4,14 @@
 # complexity = low
 # disruption = low
 
-- name: Change permissions of /home directories
-  shell: 'chmod 0750 /home/*'
+- name: Get users home directories
+  shell: awk -F":" '$7!="/usr/sbin/nologin"&&$7!="/sbin/nologin"&&$3>999 {print $6}' /etc/passwd
+  register: getPaths
+
+- name: change permissions
+  file:
+    path: "{{ item }}"
+    mode: '750' 
+  with_items: "{{  getPaths.stdout.split('\n') }}"
+
+- debug: msg="{{ getPaths.stdout.split('\n') }}"

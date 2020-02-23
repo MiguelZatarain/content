@@ -1,0 +1,27 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+
+- name: Check if a user has no home defined
+  shell: awk -F":" '$7!="/usr/sbin/nologin"&&$7!="/sbin/nologin"&&$3>999&&$6!~"\\/.*" {print $1}' /etc/passwd
+  register: noHomeUsers
+
+- name: Delete users without home
+  shell: userdel -r {{  item }}
+  with_items: "{{  noHomeUsers.stdout_lines }}"
+
+- debug: msg="{{ noHomeUsers.stdout_lines }}"
+
+- name: Get users home directories
+  shell: awk -F":" '$7!="/usr/sbin/nologin"&&$7!="/sbin/nologin"&&$3>999&&$6~"\\/.*" {print $6","$1","$3","$4}' /etc/passwd
+  register: getPaths
+
+- name: Add the user 'johnd' with a specific uid and a primary group of 'admin'
+  user:
+    name: "{{ item.split(',')[1] }}"
+    uid: "{{ item.split(',')[2] }}"
+    home: "{{ item.split(',')[0] }}"
+  with_items: "{{ getPaths.stdout_lines }}"
+
