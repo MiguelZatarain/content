@@ -1,0 +1,24 @@
+documentation_complete: true
+
+prodtype: sle11,sle12
+
+title: 'Verify Permissions on motd File'
+
+description: |-
+    Verify Permissions on motd File
+
+rationale: |-
+    Verify Permissions on motd File
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/motd", perms="-rw-------") }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/etc/motd", perms="-rw-r--r--") }}}
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /etc/motd
+        filemode: '0644'
