@@ -1,0 +1,21 @@
+documentation_complete: true
+
+prodtype: multi_platform_sle,sle11,sle12
+
+title: 'Ensure package xorg-x11-server is uninstaled'
+
+description: 'Unless rquired, package xorg-x11-server should be uninstalled'
+
+rationale: 'El sistema X Window proporciona una interfaz gráfica de usuario (GUI) donde los usuarios
+pueden tener múltiples ventanas para ejecutar programas y varios complementos. El sistema X
+Windows generalmente se usa en estaciones de trabajo donde los usuarios inician sesión, pero
+no en servidores donde los usuarios generalmente no inician sesión.'
+
+severity: high
+
+ocil_clause: 'a line is returned'
+
+ocil: |-
+    Run the following command:
+    <pre>$ sudo rpm -qa | grep xorg-x11-server</pre>
+    No line will be returned.
