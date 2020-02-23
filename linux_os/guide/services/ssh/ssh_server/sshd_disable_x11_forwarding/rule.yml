@@ -1,0 +1,21 @@
+documentation_complete: true
+
+title: 'Disable Encrypted X11 Forwarding'
+
+description: |-
+    El parámetro X11Forwarding proporciona la capacidad de tunelizar el tráfico X11 a través de la
+conexión para habilitar conexiones gráficas remotas.
+
+rationale: |-
+    El parámetro X11Forwarding proporciona la capacidad de tunelizar el tráfico X11 a través de la
+conexión para habilitar conexiones gráficas remotas.
+
+severity: medium
+
+template:
+    name: sshd_lineinfile
+    vars:
+        missing_parameter_pass: 'false'
+        parameter: X11Forwarding
+        rule_id: sshd_enable_x11_forwarding
+        value: 'no'
