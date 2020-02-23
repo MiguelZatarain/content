@@ -1,0 +1,14 @@
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_sle
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+- name: Remove file at.deny
+  file:
+    path: /etc/at.deny
+    state: absent
+
+- name: Remove file cron.deny
+  file:
+    path: /etc/cron.deny
+    state: absent
