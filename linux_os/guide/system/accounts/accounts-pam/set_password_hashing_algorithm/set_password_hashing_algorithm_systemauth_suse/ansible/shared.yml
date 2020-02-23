@@ -1,0 +1,16 @@
+# platform = multi_platform_sle
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+- name: Replace all module arguments in the existing rule in common-auth
+  pamd:
+    name: common-password
+    type: password
+    control: required
+    module_path: pam_unix.so
+    module_arguments: 'sha512'
+    state: args_present
+
+
