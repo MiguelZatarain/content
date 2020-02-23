@@ -1,0 +1,26 @@
+documentation_complete: true
+
+prodtype: multi_platform_sle,rhel7,rhel8,rhv4,sle11,sle12,wrlinux1019
+
+title: 'Verify Group Who Owns /etc/issue.net file'
+
+description: |-
+    If <tt>/etc/issue.net</tt> exists, it must be group-owned by <tt>root</tt>.
+    {{{ describe_file_group_owner(file="/etc/issue.net", group="root") }}}
+
+rationale: |-
+    If the owner of the issue.net file is not set to root, the possibility exists for an
+    unauthorized user to view or edit sensitive information.
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/issue.net", group="root") }}}'
+
+ocil: '{{{ ocil_file_group_owner(file="/etc/issue.net", group="root") }}}'
+
+template:
+    name: file_groupowner
+    vars:
+        filepath: /etc/issue.net
+        missing_file_pass: 'true'
+        filegid: '0'
