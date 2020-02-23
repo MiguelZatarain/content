@@ -1,0 +1,23 @@
+<def-group>
+  <definition class="compliance" id="empty_group_shadow" version="1">
+    <metadata>
+      <title>Verify shadow group is empty</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+        <platform>multi_platform_sle</platform>
+      </affected>
+      <description>Verify shadow group is empty</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Verify shadow group is empty" test_ref="test_empty_group_shadow" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="Verify shadow group is empty" id="test_empty_group_shadow" version="1">
+    <ind:object object_ref="object_empty_group_shadow" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_empty_group_shadow" version="1">
+    <ind:filepath>/etc/group</ind:filepath>
+    <ind:pattern operation="pattern match">^shadow\:.*\:.*\:$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

@@ -1,0 +1,18 @@
+documentation_complete: true
+
+prodtype: multi_platform_sle,sle11,sle12
+
+title: 'Verify shadow group is empty'
+
+description: 'Verify shadow group is empty'
+
+rationale: 'Verify shadow group is empty'
+
+severity: high
+
+ocil_clause: 'a line is returned'
+
+ocil: |-
+    Run the following command:
+    <pre>$ sudo grep shadow /etc/group | cut -d -f4 | tr "," "\n"</pre>
+    no line will be returned.

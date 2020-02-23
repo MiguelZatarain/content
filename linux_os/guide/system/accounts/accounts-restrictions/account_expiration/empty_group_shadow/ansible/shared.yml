@@ -1,0 +1,14 @@
+# platform = multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_rhv,multi_platform_sle
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+- name: Get users of shadow group
+  shell: grep shadow /etc/group | cut -d":" -f4 | tr "," "\n"
+  register: shadowusers
+
+- name: Change perms
+  shell: gpasswd -d {{ item }} shadow
+  with_items:
+    - '{{ shadowusers.stdout_lines }}' 
