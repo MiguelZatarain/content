@@ -1,0 +1,18 @@
+documentation_complete: true
+
+prodtype: multi_platform_sle,sle11,sle12
+
+title: 'Ensure All Accounts on the System Have Unique UIDs'
+
+description: 'Change UIDs, or delete accounts, so each has a unique name.'
+
+rationale: 'Unique UIDs allow for accountability on the system.'
+
+severity: medium
+
+ocil_clause: 'a line is returned'
+
+ocil: |-
+    Run the following command to check for duplicate account UIDs:
+    <pre>$ sudo pwck -qr</pre>
+    If there are no duplicate UIDs, no line will be returned.
