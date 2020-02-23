@@ -1,0 +1,14 @@
+# platform = multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_rhv,multi_platform_sle
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+
+- name: Get users home directories
+  shell: awk -F":" '$7!="/usr/sbin/nologin"&&$7!="/sbin/nologin"&&$3>999&&$6~"\\/.*" {print $6}' /etc/passwd
+  register: getUserHomePaths
+
+- name: Recursively find hidden files in user home directories and change their permisions
+  shell: find {{ item }} -name ".*" | xargs chmod o-w,g-w
+  with_items: "{{ getUserHomePaths.stdout_lines }}"
