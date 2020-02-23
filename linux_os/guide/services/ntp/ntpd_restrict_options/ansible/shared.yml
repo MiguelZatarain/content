@@ -1,0 +1,34 @@
+# platform = multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_sle
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+- name: Set restrict -4
+  lineinfile:
+    dest: /etc/ntp.conf
+    line: "restrict -4 default kod limited nomodify notrap nopeer noquery"
+    regexp: '^\s*restrict\s+\-4.*$'
+    state: present
+    create: yes
+
+- name: Set restrict -6
+  lineinfile:
+    dest: /etc/ntp.conf
+    line: "restrict -6 default kod limited nomodify notrap nopeer noquery"
+    regexp: '^\s*restrict\s+\-6.*$'
+    state: present
+    create: yes
+
+- name: NTPD_OPTIONS
+  lineinfile:
+    dest: /etc/sysconfig/ntp
+    line: 'NTPD_OPTIONS="-u ntp:ntp"'
+    regexp: '^\s*NTPD_OPTIONS.*$'
+    state: present
+    create: yes
+
+- name: Restart ntpd
+  service:
+    name: ntpd
+    state: restarted
