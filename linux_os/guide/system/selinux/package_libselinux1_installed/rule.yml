@@ -1,0 +1,16 @@
+documentation_complete: true
+
+prodtype: sle11,sle12
+
+title: 'Install the libselinux1 package'
+
+description: 'The libselinux1 package should be installed.'
+
+rationale: 'The libselinux1 package should be installed.'
+
+severity: high
+
+template:
+    name: package_installed
+    vars:
+        pkgname: libselinux1
