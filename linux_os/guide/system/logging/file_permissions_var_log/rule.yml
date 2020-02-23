@@ -1,0 +1,20 @@
+documentation_complete: true
+
+prodtype: multi_platform_sle,sle11,sle12
+
+title: 'Verify files permissions in /var/log'
+
+description: 'Los archivos de registro almacenados en /var/log/ contienen información registrada de muchos
+servicios en el sistema, o en otros servidores de registro.'
+
+rationale: 'Los archivos de registro almacenados en /var/log/ contienen información registrada de muchos
+servicios en el sistema, o en otros servidores de registro.'
+
+severity: high
+
+ocil_clause: 'A file has wrong permissions'
+
+ocil: |-
+    Run the following command:
+    <pre>$ ls -ld /var/log</pre>
+    and check permissions.
