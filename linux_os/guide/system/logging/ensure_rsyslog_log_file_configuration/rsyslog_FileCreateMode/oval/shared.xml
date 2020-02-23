@@ -1,0 +1,28 @@
+<def-group>
+  <definition class="compliance"
+  id="rsyslog_FileCreateMode" version="1">
+    <metadata>
+      <title>Ensure FileCreateMode is set to 0640</title>
+      <affected family="unix">
+        <platform>multi_platform_sle</platform>
+      </affected>
+      <description>Ensure FileCreateMode is set to 0640.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Ensure FileCreateMode is set to 0640 in /etc/rsyslog.conf"
+      test_ref="test_rsyslog_FileCreateMode" />
+    </criteria>
+  </definition>
+
+    <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="Ensure FileCreateMode is set to 0640 in /etc/rsyslog.conf" id="test_rsyslog_FileCreateMode" version="1">
+    <ind:object object_ref="object_rsyslog_FileCreateMode" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_rsyslog_FileCreateMode" version="2">
+    <ind:filepath>/etc/rsyslog.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*(?i)\$FileCreateMode.0640$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>
