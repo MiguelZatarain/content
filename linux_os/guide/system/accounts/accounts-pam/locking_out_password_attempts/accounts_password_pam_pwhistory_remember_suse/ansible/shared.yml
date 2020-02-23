@@ -1,0 +1,26 @@
+# platform = multi_platform_fedora,multi_platform_ol,multi_platform_rhel,multi_platform_rhv,multi_platform_sle
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = medium
+
+- name: Insert a the new rule before an existing rule in common-password
+  pamd:
+    name: common-password
+    type: password
+    control: required
+    module_path: pam_unix.so
+    new_type: password
+    new_control: required
+    new_module_path: pam_pwhistory.so
+    module_arguments: 'remember=5'
+    state: before
+
+- name: Replace all module arguments in the existing rule in common-password
+  pamd:
+    name: common-password
+    type: password
+    control: required
+    module_path: pam_pwhistory.so
+    module_arguments: 'remember=5'
+    state: updated
