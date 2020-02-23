@@ -1,0 +1,20 @@
+documentation_complete: true
+
+prodtype: fedora,multi_platform_sle,ol7,ol8,rhel6,rhel7,rhel8,rhv4,sle11,sle12,wrlinux1019
+
+title: 'Modify the /etc/issue.net Login Banner'
+
+description: |-
+    Set the right banner.
+
+rationale: |-
+    Set the right banner.
+
+severity: medium
+
+ocil_clause: 'it does not display the required banner'
+
+ocil: |-
+    To check if the system login banner is compliant,
+    run the following command:
+    <pre>$ cat /etc/issue.net</pre>
