@@ -1,0 +1,22 @@
+documentation_complete: true
+
+prodtype: fedora,ol7,ol8,rhel7,rhel8,rhv4,sle12,wrlinux1019
+
+title: 'Disable the possibility to accept messages from IPv6 routers'
+
+description: |-
+    Disable the possibility to accept messages from IPv6 routers.
+
+rationale: |-
+    Disable the possibility to accept messages from IPv6 routers.
+
+severity: medium
+
+platform: machine
+
+template:
+    name: sysctl
+    vars:
+        sysctlvar: net.ipv6.conf.all.accept_ra
+        sysctlval: '0'
+        datatype: int
