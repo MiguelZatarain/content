@@ -1,0 +1,25 @@
+documentation_complete: true
+
+prodtype: sle11,sle12
+
+title: 'Verify Permissions on hosts.allow File'
+
+description: |-
+    Verify Permissions on hosts.allow File.
+
+rationale: |-
+    If the <tt>/etc/hosts.allow</tt> file is writable by a group-owner or the
+    world the risk of its compromise is increased.
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/hosts.allow", perms="-rw-r--r--") }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/etc/hosts.allow", perms="-rw-r--r--") }}}
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /etc/hosts.allow
+        filemode: '0644'
