@@ -1,0 +1,20 @@
+documentation_complete: true
+
+prodtype: sle11,sle12
+
+title: 'Set account lock settings for failed password attempts using pam_tally2.so'
+
+description: |-
+    Set try first pass.
+
+rationale: |-
+    Retrieve the password of a previous stacked PAM module.
+
+severity: medium
+
+ocil_clause: 'try fisrt pass not set'
+
+ocil: |-
+    Set try first pass in common-password.
+
+platform: pam
