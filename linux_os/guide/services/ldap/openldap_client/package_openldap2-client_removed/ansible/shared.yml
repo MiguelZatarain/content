@@ -1,0 +1,16 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = disable
+# complexity = low
+# disruption = low
+- name: Ensure openldap2-client is removed
+  package:
+    name: openldap2-client
+    state: absent
+  tags:
+    - package_xorg_x11_server_removed
+    - high_severity
+    - disable_strategy
+    - low_complexity
+    - low_disruption
+    - no_reboot_needed
