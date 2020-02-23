@@ -1,0 +1,66 @@
+<def-group>
+  <definition class="compliance" id="group_unique_name" version="1">
+    <metadata>
+      <title>Set All groups To Have Unique Names</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+        <platform>multi_platform_sle</platform>
+      </affected>
+      <description>All groups on the system should have unique names for proper accountability.</description>
+    </metadata>
+
+      <criteria comment="There should not exist duplicate group name entries in /etc/group">
+        <criterion test_ref="test_etc_group_no_duplicate_group_names" />
+      </criteria>
+
+  </definition>
+
+  <!-- OVAL object to collect content of /etc/group file -->
+  <ind:textfilecontent54_object id="object_account_unique_group_get" version="1">
+    <ind:filepath>/etc/group</ind:filepath>
+    <!-- Group names from /etc/group (1-th column) captured as subexpression of this object -->
+    <ind:pattern operation="pattern match">^([^:]+):.*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- OVAL variable to hold the count of all the groupnames defined in /etc/group
+       (including duplicate entries if any) -->
+  <local_variable id="variable_count_of_all_groupnames_from_etc_group" datatype="int" version="1"
+  comment="Count of all groupname rows retrieved from /etc/group (including duplicates if any)">
+    <count>
+      <object_component item_field="subexpression" object_ref="object_account_unique_group_get" />
+    </count>
+  </local_variable>
+
+  <!-- Turn the OVAL variable representing count of group names into OVAL object
+       (for use in <variable_test> below)-->
+  <ind:variable_object id="object_count_of_all_groupnames_from_etc_group" version="1">
+    <ind:var_ref>variable_count_of_all_groupnames_from_etc_group</ind:var_ref>
+  </ind:variable_object>
+
+  <!-- OVAL variable to hold the count of unique groupnames defined in /etc/group -->
+  <local_variable id="variable_count_of_unique_groupnames_from_etc_group" datatype="int" version="1"
+  comment="Count of unique groupname rows retrieved from /etc/group">
+    <count>
+      <unique>
+        <object_component item_field="subexpression" object_ref="object_account_unique_group_get" />
+      </unique>
+    </count>
+  </local_variable>
+
+  <!-- Create OVAL state from count of unique groupnames OVAL variable (to be used in
+       <variable_test> below -->
+  <ind:variable_state id="state_etc_group_no_duplicate_group_names" version="1">
+    <ind:value var_ref="variable_count_of_unique_groupnames_from_etc_group" datatype="int"
+    operation="equals" var_check="at least one" />
+  </ind:variable_state>
+
+  <!-- Check if count of all the different groupnames defined in /etc/group matches the count
+       of all unique groupnames defined in /etc/group (IOW if there aren't duplicate entries) -->
+  <ind:variable_test id="test_etc_group_no_duplicate_group_names" check="all" check_existence="all_exist"
+  comment="There should not exist duplicate group name entries in /etc/group" version="1">
+    <ind:object object_ref="object_count_of_all_groupnames_from_etc_group" />
+    <ind:state state_ref="state_etc_group_no_duplicate_group_names" />
+  </ind:variable_test>
+
+</def-group>
