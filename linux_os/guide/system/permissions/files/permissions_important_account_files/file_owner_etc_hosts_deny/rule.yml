@@ -1,0 +1,21 @@
+documentation_complete: true
+
+title: 'Verify User Who Owns hosts.deny File'
+
+description: 'Verify ownership of hosts.deny file'
+
+rationale: |-
+    El archivo /etc/hosts.deny contiene información de red que utilizan muchas aplicaciones del
+sistema y, por lo tanto, debe ser legible para que estas aplicaciones funcionen.
+
+severity: medium
+
+ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/hosts.deny", owner="root") }}}'
+
+ocil: '{{{ ocil_file_owner(file="/etc/hosts.deny", owner="root") }}}'
+
+template:
+    name: file_owner
+    vars:
+        filepath: /etc/hosts.deny
+        fileuid: '0'
