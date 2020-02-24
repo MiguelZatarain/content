@@ -1,4 +1,4 @@
-<def-shadow>
+<def-group>
   <definition class="compliance" id="no_plus_entries_shadow" version="1">
     <metadata>
       <title>No "+" entries in shadow</title>
@@ -24,4 +24,4 @@
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
-</def-shadow>
+</def-group>

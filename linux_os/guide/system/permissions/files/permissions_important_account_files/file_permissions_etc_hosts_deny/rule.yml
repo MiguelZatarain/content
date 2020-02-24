@@ -7,9 +7,8 @@ title: 'Verify Permissions on hosts.deny File'
 description: |-
     Verify Permissions on /etc/hosts.deny File
 
-rationale: |-
-    El archivo /etc/hosts.deny contiene información de red que utilizan muchas aplicaciones del
-sistema y, por lo tanto, debe ser legible para que estas aplicaciones funcionen.
+rationale: 'El archivo /etc/hosts.deny contiene información de red que utilizan muchas aplicaciones del
+sistema y, por lo tanto, debe ser legible para que estas aplicaciones funcionen.'
 
 severity: medium
 
