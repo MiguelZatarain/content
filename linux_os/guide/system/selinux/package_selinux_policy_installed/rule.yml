@@ -1,0 +1,16 @@
+documentation_complete: true
+
+prodtype: sle11,sle12
+
+title: 'Install the selinux-policy package'
+
+description: 'The selinux-policy package should be installed.'
+
+rationale: 'The selinux-policy package should be installed.'
+
+severity: medium
+
+template:
+    name: package_installed
+    vars:
+        pkgname: selinux-policy
