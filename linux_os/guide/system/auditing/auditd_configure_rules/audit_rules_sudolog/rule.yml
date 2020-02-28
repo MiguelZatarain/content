@@ -1,0 +1,29 @@
+documentation_complete: true
+
+prodtype: multi_platform_sle,sle11,sle12
+
+title: 'Record system admin actions(sudolog)'
+
+description: 'Monitoree el archivo de registro de sudo. Si el sistema se configuró correctamente para
+deshabilitar el uso del comando su y obligar a todos los administradores a tener que iniciar
+sesión primero y luego usar sudo para ejecutar comandos privilegiados, todos los comandos de
+administrador se registrarán en
+/var/log/sudo.log. Cada vez que se ejecuta un comando, se activará un evento de auditoría ya
+que el archivo /var/log/sudo.log se abrirá para escritura y el comando de administración
+ejecutado se escribirá en el registro.'
+
+rationale: 'Monitoree el archivo de registro de sudo. Si el sistema se configuró correctamente para
+deshabilitar el uso del comando su y obligar a todos los administradores a tener que iniciar
+sesión primero y luego usar sudo para ejecutar comandos privilegiados, todos los comandos de
+administrador se registrarán en
+/var/log/sudo.log. Cada vez que se ejecuta un comando, se activará un evento de auditoría ya
+que el archivo /var/log/sudo.log se abrirá para escritura y el comando de administración
+ejecutado se escribirá en el registro.'
+
+severity: medium
+
+ocil_clause: 'Audit does not register system admin actions(sudolog)'
+
+ocil: 'Run the following command to verify audit configuration-> grep actions /etc/audit/audit.rules # auditctl -l | grep
+actions'
+
