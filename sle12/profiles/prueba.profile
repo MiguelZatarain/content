@@ -6,4 +6,5 @@ description: |-
     Write the profile description here
 
 selections:
-    - service_autofs_disabled
+    - audit_rules_sudoers
+    - audit_rules_sudolog

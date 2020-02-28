@@ -1,0 +1,27 @@
+documentation_complete: true
+
+prodtype: multi_platform_sle,sle11,sle12
+
+title: 'Record changes in system administration scope(sudoers)'
+
+description: 'Monitorear los cambios de alcance para las administraciones del sistema Si el sistema se
+configuró correctamente para obligar a los administradores del sistema a iniciar sesión como
+ellos mismos primero y luego usar el comando sudo para ejecutar comandos privilegiados, es
+posible monitorear los cambios en el alcance.
+El archivo /etc/sudoers se escribirá cuando el archivo o sus atributos hayan cambiado. Los
+registros de auditoría se etiquetarán con el identificador "alcance".'
+
+rationale: 'Monitorear los cambios de alcance para las administraciones del sistema Si el sistema se
+configuró correctamente para obligar a los administradores del sistema a iniciar sesión como
+ellos mismos primero y luego usar el comando sudo para ejecutar comandos privilegiados, es
+posible monitorear los cambios en el alcance.
+El archivo /etc/sudoers se escribirá cuando el archivo o sus atributos hayan cambiado. Los
+registros de auditoría se etiquetarán con el identificador "alcance".'
+
+severity: medium
+
+ocil_clause: 'Audit does not register changes in system administration scope(sudoers)'
+
+ocil: 'Run the following command to verify audit configuration-> grep scope /etc/audit/audit.rules # auditctl -l |
+grep scope'
+
