@@ -6,4 +6,4 @@ description: |-
     Write the profile description here
 
 selections:
-    - service_autofs_disabled
+    - users_last_password_change_past

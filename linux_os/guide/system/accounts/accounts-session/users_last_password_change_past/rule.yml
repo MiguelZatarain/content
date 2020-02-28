@@ -1,0 +1,16 @@
+documentation_complete: true
+
+prodtype: fedora,multi_platform_sle,ol7,ol8,rhel6,rhel7,rhel8,sle11,sle12
+
+title: 'Users must have the date of password change in the past'
+
+description: 'Users must have the date of password change in the past'
+
+rationale: 'Users must have the date of password change in the past'
+
+severity: high
+
+ocil_clause: 'A user has his last password change date in the future'
+
+ocil: 'Run chage --list user'
+

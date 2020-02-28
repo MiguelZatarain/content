@@ -1,0 +1,61 @@
+<def-group>
+  <definition class="compliance" id="users_last_password_change_past" version="2">
+    <metadata>
+      <title>Users must have the date of password change in the past</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+        <platform>multi_platform_sle</platform>
+      </affected>
+      <description>Users must have the date of password change in the past</description>
+    </metadata>
+    <criteria>
+        <criterion comment="Test SYS_UID_MIN defined in /etc/login.defs" test_ref="test_users_last_password_change_past" />
+    </criteria>
+  </definition>
+
+  <!-- OVAL object to collect content epoch last password change in /etc/shadow file -->
+  <ind:textfilecontent54_object id="object_days_shadow" version="1">
+    <ind:filepath>/etc/shadow</ind:filepath>
+    <!-- Get 3rd column -->
+    <ind:pattern operation="pattern match">[\S]+:.*:([0-9]+):[0-9]+:[0-9]+:[0-9]+:.*</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- OVAL variable to hold all users epoch last password change in days -->
+  <local_variable id="var_days_shadow" comment="Paths from /etc/passwd" datatype="int" version="1">
+    <object_component item_field="subexpression" object_ref="object_days_shadow" />
+  </local_variable>
+
+
+  <!-- Transform days into seconds -->
+  <local_variable id="variable_time_in_seconds" datatype="int"
+  comment="Construct (x - 0) * (x - (UID_MIN - 1)) expression"
+  version="1">
+    <arithmetic arithmetic_operation="multiply">
+      <variable_component var_ref="var_days_shadow" />
+      <literal_component datatype="int">86400</literal_component>
+    </arithmetic>
+  </local_variable>
+
+
+  <!-- Compare the /etc/shadow last password change date with /proc/driver/rtc last access time -->
+  <unix:file_test check="all" check_existence="none_exist" comment="/var/log/audit files mode 0640" id="test_users_last_password_change_past" version="1">
+    <unix:object object_ref="object_users_last_password_change_past" />
+  </unix:file_test>
+
+  <unix:file_object comment="/etc/motd" id="object_users_last_password_change_past" version="1">
+    <unix:filepath>/proc/driver/rtc</unix:filepath>
+    <filter action="include">state_users_last_password_change_past</filter>
+  </unix:file_object>
+
+  <unix:file_state id="state_users_last_password_change_past" version="1">
+    <unix:a_time datatype="int" operation="less than" var_ref="variable_time_in_seconds" var_check="at least one"/>
+  </unix:file_state>
+
+
+
+
+
+
+
+</def-group>
