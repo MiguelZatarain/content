@@ -1,0 +1,16 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+
+- name: Get users home directories
+  shell: awk -F":" '$7!="/usr/sbin/nologin"&&$7!="/sbin/nologin"&&$3>999 {print $6","$1}' /etc/passwd
+  register: getPaths
+
+- name: change ownership
+  file:
+    path: "{{ item.split(',')[0] }}"
+    mode: '750'
+    owner: "{{ item.split(',')[1] }}"
+  with_items: "{{  getPaths.stdout_lines }}"
