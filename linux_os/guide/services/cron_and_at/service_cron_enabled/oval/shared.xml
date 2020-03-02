@@ -1,0 +1,40 @@
+<def-group>
+  <definition class="compliance" id="service_cron_enabled" version="1">
+    <metadata>
+      <title>Service cron Enabled</title>
+      <affected family="unix">
+        <platform>multi_platform_sle</platform>
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>The cron service should be enabled.</description>
+    </metadata>
+    <criteria comment="package cron removed or service cron is not configured to start" operator="OR">
+      <criterion comment="cron removed" test_ref="test_service_cron_package_cron_removed" negate="true"/>
+      <criteria operator="AND" comment="service cron is not configured to start">
+        <criterion comment="cron is not running" test_ref="test_service_not_running_cron" negate="true"/>
+      </criteria>
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="none_exist" comment="/var/log files permissions" id="test_service_not_running_cron" version="1">
+    <unix:object object_ref="object_service_not_running_cron" />
+  </unix:file_test>
+
+  <unix:file_object comment="/var/log files" id="object_service_not_running_cron" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <unix:path operation="equals">/etc/systemd/system</unix:path>
+    <unix:filename operation="pattern match">^cron\.(service|socket)$</unix:filename>
+  </unix:file_object>
+
+
+  <linux:rpminfo_test check="all" check_existence="none_exist"
+  id="test_service_cron_package_cron_removed" version="1"
+  comment="package cron is removed">
+    <linux:object object_ref="obj_test_service_cron_package_cron_removed" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="obj_test_service_cron_package_cron_removed" version="1">
+    <linux:name>cron</linux:name>
+  </linux:rpminfo_object>
+
+
+</def-group>

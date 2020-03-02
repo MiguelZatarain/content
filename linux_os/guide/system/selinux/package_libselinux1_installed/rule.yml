@@ -8,7 +8,7 @@ description: 'The libselinux1 package should be installed.'
 
 rationale: 'The libselinux1 package should be installed.'
 
-severity: high
+severity: medium
 
 template:
     name: package_installed
